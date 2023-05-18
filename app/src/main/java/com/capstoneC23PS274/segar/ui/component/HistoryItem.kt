@@ -18,15 +18,16 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
+val MainGreen = Color(0xFF7DC09C)
 @Composable
 fun HistoryList(
     modifier: Modifier = Modifier,
 ) {
     Card (
         modifier = modifier.fillMaxWidth(),
-        border = BorderStroke(5.dp, Color.Green)
+        border = BorderStroke(3.dp, MainGreen)
     ){
-        Row (){
+        Row {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data("https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg")
@@ -35,9 +36,10 @@ fun HistoryList(
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .width(150.dp)
+                    .width(100.dp)
                     .height(150.dp)
-
+                    .padding(8.dp)
+                    .border(BorderStroke(3.dp, MainGreen))
             )
             Column(modifier = Modifier.padding(8.dp)) {
                 Text(
@@ -55,6 +57,11 @@ fun HistoryList(
                     fontSize = 30.sp,
                 )
 
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(15.dp)
+                )
 
                 Text(
                     text = "12 Januari 2025",
