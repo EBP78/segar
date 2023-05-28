@@ -2,6 +2,7 @@ package com.capstoneC23PS274.segar.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -21,10 +22,13 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.capstoneC23PS274.segar.R
+import com.capstoneC23PS274.segar.data.remote.response.DictionaryItemData
+import com.capstoneC23PS274.segar.ui.theme.MainGreen
 
-val MainGreen = Color(0xFF7DC09C)
 @Composable
 fun DictionaryItem (
+    itemData: DictionaryItemData,
+    onClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
@@ -37,7 +41,7 @@ fun DictionaryItem (
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data("https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg")
+                        .data(itemData.ImageUrl)
                         .crossfade(true)
                         .build(),
                     contentDescription = null,
@@ -50,7 +54,7 @@ fun DictionaryItem (
                 )
                 Column(modifier = Modifier.padding(8.dp)) {
                     Text(
-                        text = "Sawi",
+                        text = itemData.name,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 30.sp
@@ -58,19 +62,19 @@ fun DictionaryItem (
 
 
                     Text(
-                        text = "Nama latin",
+                        text = itemData.nameLatin,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                     )
 
                     Text(
-                        text = "Famili",
+                        text = itemData.famili,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                     )
 
                     Text(
-                        text = "Bagian yang dikonsumsi",
+                        text = itemData.konsumsi,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -79,7 +83,11 @@ fun DictionaryItem (
             Icon(
                 painter = painterResource(id = R.drawable.baseline_keyboard_arrow_right_24),
                 contentDescription = "Expandable Arrow",
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .clickable{
+                        onClick(itemData.id)
+                    }
             )
         }
     }
@@ -89,8 +97,13 @@ fun DictionaryItem (
 @Preview(showBackground = true)
 fun DictionaryPreview() {
     MaterialTheme {
+        val dictionaryItem = DictionaryItemData("001", "sawi", "sawitius desu", "https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg", "bebek", "daun", "none")
         DictionaryItem(
-            modifier = Modifier
+            itemData = dictionaryItem,
+            modifier = Modifier,
+            onClick = { id ->
+
+            }
         )
     }
 }
