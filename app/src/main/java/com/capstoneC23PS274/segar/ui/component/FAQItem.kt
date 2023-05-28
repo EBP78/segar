@@ -24,7 +24,7 @@ import androidx.compose.ui.draw.rotate
 
 val MainGreen = Color(0xFF7DC09C)
 @Composable
-fun FAQList(
+fun FAQListItem(
     question: String,
     answer: String,
     modifier: Modifier = Modifier,
@@ -89,7 +89,7 @@ fun FAQList(
 @Preview(showBackground = true)
 fun FAQPreview() {
     MaterialTheme {
-        FAQList(
+        FAQListItem(
             "Question 1...",
             "Answer 1... lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet"
         )
