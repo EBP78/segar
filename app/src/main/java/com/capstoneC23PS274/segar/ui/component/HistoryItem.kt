@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.capstoneC23PS274.segar.ui.theme.MainGreen
 
-val MainGreen = Color(0xFF7DC09C)
 @Composable
 fun HistoryList(
     modifier: Modifier = Modifier,
