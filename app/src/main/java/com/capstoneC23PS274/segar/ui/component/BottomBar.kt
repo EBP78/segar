@@ -1,8 +1,14 @@
 package com.capstoneC23PS274.segar.ui.component
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -15,8 +21,12 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -99,9 +109,39 @@ fun BottomBar(
 }
 
 @Composable
+fun CameraFAB(
+    onClick : () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    FloatingActionButton(
+        onClick = onClick,
+        backgroundColor = MaterialTheme.colors.primary,
+        modifier = modifier
+            .testTag("CameraFAB")
+            .size(75.dp)
+            .border(BorderStroke(7.dp, Color.White), CircleShape)
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.baseline_camera_alt_24),
+            contentDescription = stringResource(R.string.menu_check),
+        )
+    }
+}
+
+@Composable
 @Preview(showBackground = true)
 fun BottomBarPreview() {
     SegarTheme() {
         BottomBar(navController = rememberNavController())
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun CameraFABPreview() {
+    SegarTheme() {
+        CameraFAB(onClick = {
+
+        })
     }
 }
