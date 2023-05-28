@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">segar</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_dict">Dict</string>
+    <string name="menu_check">Check</string>
+    <string name="menu_history">History</string>
+    <string name="menu_profile">Profile</string>
 </resources>
