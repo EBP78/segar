@@ -20,9 +20,8 @@ import com.capstoneC23PS274.segar.R
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.rotate
+import com.capstoneC23PS274.segar.ui.theme.MainGreen
 
-
-val MainGreen = Color(0xFF7DC09C)
 @Composable
 fun FAQListItem(
     question: String,
