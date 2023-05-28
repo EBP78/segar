@@ -16,6 +16,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +34,9 @@ import com.capstoneC23PS274.segar.ui.theme.SegarTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.capstoneC23PS274.segar.ui.component.CameraFAB
 
 
 private var imageCapture: ImageCapture? = null
@@ -79,18 +82,17 @@ fun CameraScreen (
                 modifier = Modifier.fillMaxSize(),
                 factory = { startCameraPreviewView(context, lifecycleOwner) }
             )
-            Button(
-                onClick = {
-                    takePhoto(
-                        application = application,
-                        context = context,
-                        toResult = toResult
-                    )
-                },
-                modifier = Modifier.align(Alignment.BottomCenter)
-            ) {
-                Text(text = "foto")
-            }
+            CameraFAB(onClick = {
+                takePhoto(
+                    application = application,
+                    context = context,
+                    toResult = toResult
+                )
+            },
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 16.dp)
+            )
         }
     }
 }

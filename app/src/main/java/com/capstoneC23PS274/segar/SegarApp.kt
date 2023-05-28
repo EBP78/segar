@@ -39,27 +39,15 @@ fun SegarApp(
         },
         floatingActionButton = {
             if (currentRoute != Screen.Check.route){
-                FloatingActionButton(
-                    onClick = {
-                        navController.navigate(Screen.Check.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            restoreState = true
-                            launchSingleTop = true
+                CameraFAB(onClick = {
+                    navController.navigate(Screen.Check.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
                         }
-                    },
-                    backgroundColor = MaterialTheme.colors.primary,
-                    modifier = modifier
-                        .testTag("Check")
-                        .size(75.dp)
-                        .border(BorderStroke(7.dp, Color.White), CircleShape)
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.baseline_camera_alt_24),
-                        contentDescription = stringResource(R.string.menu_check),
-                    )
-                }
+                        restoreState = true
+                        launchSingleTop = true
+                    }
+                })
             }
         },
         floatingActionButtonPosition = FabPosition.Center,
