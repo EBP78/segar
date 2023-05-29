@@ -16,17 +16,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.capstoneC23PS274.segar.ui.component.FormInput
+import com.capstoneC23PS274.segar.ui.theme.MainGreen
 
-val MainGreen = Color(0xFF7DC09C)
 @Composable
 fun RegisterScreen(
+    goToLogin: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box {
         Column(
-            modifier = Modifier
-                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -40,86 +43,15 @@ fun RegisterScreen(
                     .height(200.dp)
                     .padding(50.dp)
             )
-        }
-        Column {
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-            )
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                border = BorderStroke(1.dp, MainGreen)
-            ) {
-                Text(
-                    text = "Username",
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .padding(5.dp)
-                )
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                border = BorderStroke(1.dp, MainGreen)
-            ) {
-                Text(
-                    text = "Email",
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .padding(5.dp)
-                )
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                border = BorderStroke(1.dp, MainGreen)
-            ) {
-                Text(
-                    text = "Password",
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .padding(5.dp)
-                )
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                border = BorderStroke(1.dp, MainGreen)
-            ) {
-                Text(
-                    text = "Confirm Password",
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .padding(5.dp)
-                )
-            }
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(430.dp)
-            )
+            FormInput(query = "", onQueryChange = {}, placeholder = "Username")
+            FormInput(query = "", onQueryChange = {}, placeholder = "Email")
+            FormInput(query = "", onQueryChange = {}, placeholder = "Password")
+            FormInput(query = "", onQueryChange = {}, placeholder = "Confirm Password")
             Button(
                 modifier = Modifier
-                    .width(200.dp)
-                    .height(80.dp)
-                    .padding(8.dp),
-                onClick = { /*TODO*/ },
+                    .widthIn(min = 200.dp)
+                    .padding(10.dp),
+                onClick = { goToLogin() },
                 colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen)
             ) {
                 Text(
@@ -136,9 +68,12 @@ fun RegisterScreen(
 }
     @Composable
     @Preview(showBackground = true)
-    fun LoginPreview() {
+    fun RegisterPreview() {
         MaterialTheme {
             RegisterScreen(
+                goToLogin = {
+                            
+                },
                 modifier = Modifier
             )
         }
