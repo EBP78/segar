@@ -1,9 +1,16 @@
 package com.capstoneC23PS274.segar.ui.screen.login
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,17 +24,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.capstoneC23PS274.segar.ui.component.FormInput
 
 val MainGreen = Color(0xFF7DC09C)
 @Composable
 fun LoginScreen(
+    goToMain: () -> Unit,
+    goToRegister: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box {
         Column(
-            modifier = Modifier
-                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -41,117 +52,58 @@ fun LoginScreen(
                     .height(200.dp)
                     .padding(50.dp)
             )
-        }
-        Column{
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-            )
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                border = BorderStroke(1.dp, MainGreen)
-            ) {
-                Text(
-                    text = "Email",
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .padding(5.dp)
-                )
-            }
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                border = BorderStroke(1.dp, MainGreen)
-            ) {
-                Text(
-                    text = "Password",
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .padding(5.dp)
-                )
-            }
-            Text(
-                text = "Forgotten Password",
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                color = MainGreen,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(8.dp)
-            )
-        }
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(350.dp)
-        )
-        Button(
-            modifier = Modifier
-                .width(200.dp)
-                .height(80.dp)
-                .padding(8.dp),
-            onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen)
-        ) {
-            Text(
-                text = "Login",
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 25.sp,
-            )
-        }
-    }
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(550.dp)
-            )
+
+            FormInput(query = "", onQueryChange = {}, placeholder = "Email")
+            FormInput(query = "", onQueryChange = {}, placeholder = "Password")
             Button(
+                onClick = {
+                          // viewmodel funciton here
+                          // success go to main
+                },
+                colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
                 modifier = Modifier
-                    .width(150.dp)
-                    .height(60.dp)
-                    .padding(8.dp),
-                onClick = { /*TODO*/ },
-                colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen)
+                    .widthIn(min = 200.dp)
+                    .padding(10.dp),
             ) {
                 Text(
-                    text = "Register",
+                    text = "Login",
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
+                    fontSize = 25.sp,
                 )
             }
         }
+        Button(
+            onClick = goToRegister,
+            colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
+            modifier = Modifier
+                .widthIn(min = 150.dp)
+                .padding(10.dp)
+                .align(Alignment.BottomCenter)
+        ) {
+            Text(
+                text = "Register",
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+            )
+        }
     }
+}
 
 
 @Composable
 @Preview(showBackground = true)
 fun LoginPreview() {
     MaterialTheme {
-        LoginScreen(
-            modifier = Modifier
-        )
+        LoginScreen(goToMain = {
+
+        }, goToRegister = {
+
+        })
     }
 }
