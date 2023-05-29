@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.Typeface
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.capstoneC23PS274.segar.ui.screen.login.MainGreen
+import com.capstoneC23PS274.segar.ui.theme.MainGreen
 import com.capstoneC23PS274.segar.ui.theme.Typography
 
 @Composable
