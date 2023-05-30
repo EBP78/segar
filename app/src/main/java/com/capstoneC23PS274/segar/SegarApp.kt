@@ -42,14 +42,21 @@ fun SegarApp(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    // get this from preference later
+    val isLogin = false
+    val noBottomNav = listOf<String>(
+        Screen.Login.route,
+        Screen.Register.route,
+        Screen.Check.route
+    )
     Scaffold(
         bottomBar = {
-            if (currentRoute != Screen.Check.route){
+            if (currentRoute !in noBottomNav){
                 BottomBar(navController = navController)
             }
         },
         floatingActionButton = {
-            if (currentRoute != Screen.Check.route){
+            if (currentRoute !in noBottomNav){
                 CameraFAB(onClick = {
                     navController.navigate(Screen.Check.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
@@ -67,7 +74,7 @@ fun SegarApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Home.route,
+            startDestination = if(isLogin) Screen.Home.route else Screen.Login.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) {
@@ -112,7 +119,19 @@ fun SegarApp(
                 HistoryScreen()
             }
             composable(Screen.Profile.route) {
-                ProfileScreen()
+                ProfileScreen(toFaq = {
+                    navController.navigate(Screen.Faq.route){
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                }, logout = {
+                    navController.navigate(Screen.Login.route){
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                })
             }
             composable(Screen.Faq.route){
                 FAQScreen()

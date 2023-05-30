@@ -18,12 +18,14 @@ import com.capstoneC23PS274.segar.ui.theme.MainGreen
 
 @Composable
 fun ProfileScreen(
+    toFaq: () -> Unit,
+    logout: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(10.dp)
         ) {
@@ -67,23 +69,7 @@ fun ProfileScreen(
                 fontWeight = FontWeight.Bold
             )
             Button(
-                onClick = {},
-                colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
-                modifier = Modifier
-                    .widthIn(min = 150.dp)
-                    .padding(10.dp)
-            ) {
-                Text(
-                    text = "Edit Profile",
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                )
-            }
-            Button(
-                onClick = {},
+                onClick = toFaq,
                 colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
                 modifier = Modifier
                     .widthIn(min = 150.dp)
@@ -99,7 +85,7 @@ fun ProfileScreen(
                 )
             }
             Button(
-                onClick = {},
+                onClick = logout,
                 colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
                 modifier = Modifier
                     .widthIn(min = 150.dp)
@@ -123,6 +109,6 @@ fun ProfileScreen(
 @Preview(showBackground = true)
 fun ProfilePreview() {
     MaterialTheme {
-        ProfileScreen()
+        ProfileScreen(toFaq = {}, logout = {})
     }
 }

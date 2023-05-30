@@ -57,8 +57,9 @@ fun LoginScreen(
             FormInput(query = "", onQueryChange = {}, placeholder = "Password")
             Button(
                 onClick = {
-                          // viewmodel funciton here
-                          // success go to main
+                  // viewmodel funciton here
+                  // success go to main
+                    goToMain()
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
                 modifier = Modifier

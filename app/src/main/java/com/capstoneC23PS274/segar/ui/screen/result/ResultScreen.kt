@@ -33,7 +33,7 @@ fun ResultScreen(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         modifier = modifier.fillMaxSize()
     ) {
         AsyncImage(
@@ -44,8 +44,8 @@ fun ResultScreen(
             contentDescription = "gambar sayur",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .width(275.dp)
-                .height(425.dp)
+                .width(225.dp)
+                .height(350.dp)
                 .padding(8.dp)
                 .border(BorderStroke(3.dp, MainGreen))
         )
