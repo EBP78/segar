@@ -44,7 +44,7 @@ private var imageCapture: ImageCapture? = null
 @Composable
 fun CameraScreen (
     application: Application,
-    toResult : () -> Unit,
+    toResult : (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -121,7 +121,7 @@ private fun startCameraPreviewView(context: Context, owner : LifecycleOwner): Pr
     return previewView
 }
 
-private fun takePhoto(application: Application, context: Context, toResult : () -> Unit) {
+private fun takePhoto(application: Application, context: Context, toResult : (String) -> Unit) {
     val imageCapture = imageCapture ?: return
 
     val photoFile = createFile(application)
@@ -137,7 +137,7 @@ private fun takePhoto(application: Application, context: Context, toResult : () 
                     "Berhasil mengambil gambar.",
                     Toast.LENGTH_SHORT
                 ).show()
-                toResult()
+                toResult("003")
             }
 
             override fun onError(exception: ImageCaptureException) {

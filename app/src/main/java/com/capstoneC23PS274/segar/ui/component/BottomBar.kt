@@ -34,6 +34,7 @@ import androidx.navigation.compose.rememberNavController
 import com.capstoneC23PS274.segar.R
 import com.capstoneC23PS274.segar.ui.navigation.NavigationItem
 import com.capstoneC23PS274.segar.ui.navigation.Screen
+import com.capstoneC23PS274.segar.ui.theme.MainGreen
 import com.capstoneC23PS274.segar.ui.theme.SegarTheme
 
 @Composable

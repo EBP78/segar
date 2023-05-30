@@ -1,7 +1,9 @@
 package com.capstoneC23PS274.segar.ui.screen.dictionary
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryItemData
 import com.capstoneC23PS274.segar.ui.component.DictionaryItem
 
@@ -16,9 +18,7 @@ fun DictionaryScreen (
     val dictionaryItem = DictionaryItemData("001", "sawi", "sawitius desu", "https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg", "bebek", "daun", "none")
     DictionaryItem(
         itemData = dictionaryItem,
-        modifier = Modifier,
-        onClick = { id ->
-            itemOnClick(id)
-        }
+        modifier = Modifier.padding(10.dp),
+        onClick = itemOnClick
     )
 }
