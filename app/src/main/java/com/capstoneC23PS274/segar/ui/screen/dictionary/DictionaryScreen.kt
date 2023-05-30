@@ -17,8 +17,6 @@ fun DictionaryScreen (
     DictionaryItem(
         itemData = dictionaryItem,
         modifier = Modifier,
-        onClick = { id ->
-            itemOnClick(id)
-        }
+        onClick = itemOnClick
     )
 }
