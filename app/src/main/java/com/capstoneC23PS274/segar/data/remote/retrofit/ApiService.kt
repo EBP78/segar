@@ -3,12 +3,15 @@ package com.capstoneC23PS274.segar.data.remote.retrofit
 import com.capstoneC23PS274.segar.data.remote.body.LoginBody
 import com.capstoneC23PS274.segar.data.remote.body.RegisterBody
 import com.capstoneC23PS274.segar.data.remote.response.CommonResponse
+import com.capstoneC23PS274.segar.data.remote.response.DictionaryResponse
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface ApiService{
@@ -21,4 +24,9 @@ interface ApiService{
     suspend fun postRegisterUser(
         @Body registerBody: RegisterBody
     ) : CommonResponse
+
+    @GET
+    suspend fun getAllDict(
+        @Header("Authorization") token: String
+    ) : DictionaryResponse
 }
