@@ -8,12 +8,13 @@ import com.capstoneC23PS274.segar.data.remote.response.DictDetailItem
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryItem
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
 import com.capstoneC23PS274.segar.data.remote.retrofit.ApiService
+import com.capstoneC23PS274.segar.utils.ConstantValue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 class SegarRepository (private val apiService: ApiService, private val userPreference: UserPreference) {
 
-    private val token = userPreference.getToken()
+    private val token = ConstantValue.AUTH + userPreference.getToken()
 
     suspend fun postLogin(loginBody: LoginBody) : Flow<LoginResponse> {
         val result : LoginResponse = apiService.postLoginUser(loginBody)
