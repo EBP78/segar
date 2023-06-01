@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flowOf
 
 class SegarRepository (private val apiService: ApiService, private val userPreference: UserPreference) {
 
-    val token = userPreference.getToken()
+    private val token = userPreference.getToken()
 
     suspend fun postLogin(loginBody: LoginBody) : Flow<LoginResponse> {
         val result : LoginResponse = apiService.postLoginUser(loginBody)

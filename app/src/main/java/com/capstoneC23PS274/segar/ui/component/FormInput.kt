@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Typeface
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,11 +30,17 @@ fun FormInput(
     query: String,
     onQueryChange: (String) -> Unit,
     placeholder: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isPassword: Boolean = false,
 ) {
     TextField(
         value = query,
         onValueChange = onQueryChange,
+        label = {
+            Text(
+                text = placeholder
+            )},
+        singleLine = true,
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = MaterialTheme.colors.surface,
             disabledIndicatorColor = Color.Transparent,
@@ -46,6 +54,7 @@ fun FormInput(
                 fontSize = 18.sp
             )
         },
+        visualTransformation = if (!isPassword) VisualTransformation.None else PasswordVisualTransformation(),
         modifier = modifier
             .padding(1.dp)
             .fillMaxWidth()
