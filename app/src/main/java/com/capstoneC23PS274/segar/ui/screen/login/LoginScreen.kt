@@ -81,7 +81,8 @@ fun LoginScreen(
                 onQueryChange = {newString ->
                     viewModel.updatePassword(newString)
                 },
-                placeholder = "Password"
+                placeholder = "Password",
+                isPassword = true
             )
             viewModel.loginResult.collectAsState(initial = UiState.Loading).value.let { uiState ->
                 when(uiState) {
@@ -110,6 +111,7 @@ fun LoginScreen(
                     }
                     is UiState.Success -> {
                         goToMain()
+                        viewModel.isFinished()
                     }
                     is UiState.Error -> {
                         Toast.makeText(context,"gagal", Toast.LENGTH_SHORT).show()
