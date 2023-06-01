@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class LoginResponse(
 
 	@field:SerializedName("data")
-	val data: Data? = null,
+	val data: LoginData? = null,
 
 	@field:SerializedName("error")
 	val error: Boolean? = null,
@@ -14,7 +14,7 @@ data class LoginResponse(
 	val message: String? = null
 )
 
-data class Data(
+data class LoginData(
 
 	@field:SerializedName("token")
 	val token: String? = null
