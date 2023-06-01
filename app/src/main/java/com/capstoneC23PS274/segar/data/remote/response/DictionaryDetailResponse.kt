@@ -2,10 +2,10 @@ package com.capstoneC23PS274.segar.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class DictionaryResponse(
+data class DictionaryDetailResponse(
 
 	@field:SerializedName("data")
-	val data: List<DictionaryItem>,
+	val data: DictDetailItem,
 
 	@field:SerializedName("error")
 	val error: Boolean? = null,
@@ -14,13 +14,22 @@ data class DictionaryResponse(
 	val message: String? = null
 )
 
-data class DictionaryItem(
+data class DictDetailItem(
 
 	@field:SerializedName("image")
 	val image: String? = null,
 
+	@field:SerializedName("origin")
+	val origin: String? = null,
+
+	@field:SerializedName("__v")
+	val v: Int? = null,
+
 	@field:SerializedName("name")
 	val name: String? = null,
+
+	@field:SerializedName("brief_desc")
+	val briefDesc: String? = null,
 
 	@field:SerializedName("scientific_name")
 	val scientificName: String? = null,
