@@ -6,12 +6,15 @@ import com.capstoneC23PS274.segar.data.SegarRepository
 import com.capstoneC23PS274.segar.ui.screen.dictdetail.DictDetailViewmodel
 import com.capstoneC23PS274.segar.ui.screen.dictionary.DictionaryViewmodel
 import com.capstoneC23PS274.segar.ui.screen.login.LoginViewmodel
+import com.capstoneC23PS274.segar.ui.screen.register.RegisterViewmodel
 
 class ViewModelFactory (private val segarRepository: SegarRepository) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewmodel::class.java)){
             return LoginViewmodel(segarRepository) as T
+        } else if (modelClass.isAssignableFrom(RegisterViewmodel::class.java)){
+            return RegisterViewmodel(segarRepository) as T
         } else if (modelClass.isAssignableFrom(DictionaryViewmodel::class.java)){
             return DictionaryViewmodel(segarRepository) as T
         } else if (modelClass.isAssignableFrom(DictDetailViewmodel::class.java)){
