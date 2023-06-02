@@ -1,9 +1,12 @@
 package com.capstoneC23PS274.segar.ui.screen.register
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,16 +17,30 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.capstoneC23PS274.segar.di.Injection
 import com.capstoneC23PS274.segar.ui.component.FormInput
 import com.capstoneC23PS274.segar.ui.theme.MainGreen
+import com.capstoneC23PS274.segar.utils.ViewModelFactory
+import androidx.compose.runtime.getValue
+import com.capstoneC23PS274.segar.ui.common.UiState
 
 @Composable
 fun RegisterScreen(
     goToLogin: () -> Unit,
     modifier: Modifier = Modifier,
+    viewmodel: RegisterViewmodel = viewModel(
+        factory = ViewModelFactory(Injection.provideRepository(LocalContext.current))
+    ),
+    context: Context = LocalContext.current,
 ) {
+    val username by viewmodel.username
+    val email by viewmodel.email
+    val password by viewmodel.password
+    val confirmPassword by viewmodel.confirmPassword
+    val canClick by viewmodel.canClick
     Box {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -43,25 +60,54 @@ fun RegisterScreen(
                     .height(200.dp)
                     .padding(50.dp)
             )
-            FormInput(query = "", onQueryChange = {}, placeholder = "Username")
-            FormInput(query = "", onQueryChange = {}, placeholder = "Email")
-            FormInput(query = "", onQueryChange = {}, placeholder = "Password")
-            FormInput(query = "", onQueryChange = {}, placeholder = "Confirm Password")
-            Button(
-                modifier = Modifier
-                    .widthIn(min = 200.dp)
-                    .padding(10.dp),
-                onClick = { goToLogin() },
-                colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen)
-            ) {
-                Text(
-                    text = "Register",
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 25.sp,
-                )
+            FormInput(
+                query = username,
+                onQueryChange = { viewmodel.updateUsername(it) },
+                placeholder = "Username"
+            )
+            FormInput(query = email,
+                onQueryChange = { viewmodel.updateEmail(it) },
+                placeholder = "Email"
+            )
+            FormInput(query = password,
+                onQueryChange = { viewmodel.updatePassword(it) },
+                placeholder = "Password",
+                isPassword = true
+            )
+            FormInput(query = confirmPassword,
+                onQueryChange = { viewmodel.updateConfirmPassword(it) },
+                placeholder = "Confirm Password",
+                isPassword = true
+            )
+            viewmodel.registerResult.collectAsState(initial = UiState.Loading).value.let { uiState ->
+                when(uiState) {
+                    is UiState.Loading -> {
+                        Button(
+                            modifier = Modifier
+                                .widthIn(min = 200.dp)
+                                .padding(10.dp),
+                            enabled = canClick,
+                            onClick = { viewmodel.registerUser() },
+                            colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen)
+                        ) {
+                            Text(
+                                text = "Register",
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 25.sp,
+                            )
+                        }
+                    }
+                    is UiState.Success -> {
+                        goToLogin()
+                        viewmodel.isFinished()
+                    }
+                    is UiState.Error -> {
+                        Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }

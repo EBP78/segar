@@ -54,9 +54,4 @@ class LoginViewmodel (private val repository: SegarRepository) : ViewModel() {
     fun isFinished(){
         _loginResult.value = UiState.Loading
     }
-
-    private fun cancel(){
-        job.cancel()
-    }
-
 }
