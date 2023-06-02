@@ -21,6 +21,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,7 +37,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.capstoneC23PS274.segar.di.Injection
+import com.capstoneC23PS274.segar.ui.common.UiState
 import com.capstoneC23PS274.segar.ui.component.CameraFAB
+import com.capstoneC23PS274.segar.utils.ViewModelFactory
+import java.io.File
 
 
 private var imageCapture: ImageCapture? = null
@@ -46,8 +52,11 @@ fun CameraScreen (
     application: Application,
     toResult : (String) -> Unit,
     modifier: Modifier = Modifier,
+    viewmodel: CameraViewmodel = viewModel(
+        factory = ViewModelFactory(Injection.provideRepository(LocalContext.current))
+    ),
+    context: Context = LocalContext.current
 ) {
-    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
     var hasCamPermission by remember {
@@ -58,7 +67,6 @@ fun CameraScreen (
             }
         )
     }
-
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
@@ -76,23 +84,38 @@ fun CameraScreen (
         )
     }
 
-    Box {
-        if (hasCamPermission) {
-            AndroidView(
-                modifier = Modifier.fillMaxSize(),
-                factory = { startCameraPreviewView(context, lifecycleOwner) }
-            )
-            CameraFAB(onClick = {
-                takePhoto(
-                    application = application,
-                    context = context,
-                    toResult = toResult
-                )
-            },
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 16.dp)
-            )
+    viewmodel.checkResult.collectAsState(initial = UiState.Loading).value.let { uiState ->
+        when(uiState) {
+            is UiState.Loading -> {
+                Box {
+                    if (hasCamPermission) {
+                        AndroidView(
+                            modifier = Modifier.fillMaxSize(),
+                            factory = { startCameraPreviewView(context, lifecycleOwner) }
+                        )
+                        CameraFAB(onClick = {
+                            takePhoto(
+                                application = application,
+                                context = context,
+                                toResult = { file ->
+                                    viewmodel.checkImage(file)
+                                }
+                            )
+                        },
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 16.dp)
+                        )
+                    }
+                }
+            }
+            is UiState.Success -> {
+                toResult(uiState.data.id.toString())
+                viewmodel.isFinished()
+            }
+            is UiState.Error -> {
+                Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
@@ -121,7 +144,7 @@ private fun startCameraPreviewView(context: Context, owner : LifecycleOwner): Pr
     return previewView
 }
 
-private fun takePhoto(application: Application, context: Context, toResult : (String) -> Unit) {
+private fun takePhoto(application: Application, context: Context, toResult : (File) -> Unit) {
     val imageCapture = imageCapture ?: return
 
     val photoFile = createFile(application)
@@ -137,7 +160,7 @@ private fun takePhoto(application: Application, context: Context, toResult : (St
                     "Berhasil mengambil gambar.",
                     Toast.LENGTH_SHORT
                 ).show()
-                toResult("003")
+                toResult(photoFile)
             }
 
             override fun onError(exception: ImageCaptureException) {
