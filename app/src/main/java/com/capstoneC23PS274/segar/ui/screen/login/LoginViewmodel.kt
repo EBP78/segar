@@ -28,6 +28,9 @@ class LoginViewmodel (private val repository: SegarRepository) : ViewModel() {
     private val _password = mutableStateOf("")
     val password : State<String> get() = _password
 
+    private val _loading = mutableStateOf(false)
+    val loading : State<Boolean> get() = _loading
+
     private lateinit var job: Job
 
     fun updateEmail(newString: String){
@@ -39,6 +42,7 @@ class LoginViewmodel (private val repository: SegarRepository) : ViewModel() {
     }
 
     fun login(){
+        _loading.value = true
         val loginBody = LoginBody(email.value, password.value)
         job = viewModelScope.launch {
             repository.postLogin(loginBody)
@@ -48,6 +52,7 @@ class LoginViewmodel (private val repository: SegarRepository) : ViewModel() {
                 .cancellable().collect { data ->
                     _loginResult.value =UiState.Success(data)
                 }
+            _loading.value = false
         }
     }
 

@@ -34,6 +34,7 @@ import com.capstoneC23PS274.segar.ui.theme.MainGreen
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 import androidx.compose.runtime.getValue
 import com.capstoneC23PS274.segar.ui.common.UiState
+import com.capstoneC23PS274.segar.ui.component.LoadingAnimation
 
 @Composable
 fun LoginScreen(
@@ -47,8 +48,9 @@ fun LoginScreen(
 ) {
     val email by viewModel.email
     val password by viewModel.password
+    val loading by viewModel.loading
     Box (
-        modifier = modifier
+        modifier = modifier.fillMaxSize()
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -136,6 +138,10 @@ fun LoginScreen(
                 fontSize = 18.sp,
             )
         }
+        LoadingAnimation(
+            isDisplayed = loading,
+            modifier = Modifier.align(Alignment.Center)
+        )
     }
 }
 
