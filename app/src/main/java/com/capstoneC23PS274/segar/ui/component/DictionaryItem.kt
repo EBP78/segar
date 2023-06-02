@@ -22,12 +22,12 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.capstoneC23PS274.segar.R
-import com.capstoneC23PS274.segar.data.remote.response.DictionaryItemData
+import com.capstoneC23PS274.segar.data.remote.response.DictionaryItem
 import com.capstoneC23PS274.segar.ui.theme.MainGreen
 
 @Composable
 fun DictionaryItem (
-    itemData: DictionaryItemData,
+    itemData: DictionaryItem,
     onClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -41,7 +41,7 @@ fun DictionaryItem (
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(itemData.ImageUrl)
+                        .data(itemData.image)
                         .crossfade(true)
                         .build(),
                     contentDescription = null,
@@ -54,7 +54,7 @@ fun DictionaryItem (
                 )
                 Column(modifier = Modifier.padding(8.dp)) {
                     Text(
-                        text = itemData.name,
+                        text = itemData.name.toString(),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 30.sp
@@ -62,19 +62,19 @@ fun DictionaryItem (
 
 
                     Text(
-                        text = itemData.nameLatin,
+                        text = itemData.scientificName.toString(),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                     )
 
                     Text(
-                        text = itemData.famili,
+                        text = itemData.famili.toString(),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                     )
 
                     Text(
-                        text = itemData.konsumsi,
+                        text = itemData.consumablePart.toString(),
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -86,7 +86,7 @@ fun DictionaryItem (
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .clickable{
-                        onClick(itemData.id)
+                        onClick(itemData.id.toString())
                     }
             )
         }
@@ -97,7 +97,7 @@ fun DictionaryItem (
 @Preview(showBackground = true)
 fun DictionaryPreview() {
     MaterialTheme {
-        val dictionaryItem = DictionaryItemData("001", "sawi", "sawitius desu", "https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg", "bebek", "daun", "none")
+        val dictionaryItem = DictionaryItem("001", "sawi", "sawitius desu", "https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg", "bebek", "daun")
         DictionaryItem(
             itemData = dictionaryItem,
             modifier = Modifier,
