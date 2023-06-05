@@ -14,6 +14,7 @@ import com.capstoneC23PS274.segar.data.remote.response.UserData
 import com.capstoneC23PS274.segar.data.remote.retrofit.ApiService
 import com.capstoneC23PS274.segar.ui.screen.camera.reduceFileImage
 import com.capstoneC23PS274.segar.utils.ConstantValue
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -26,9 +27,20 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
     private val token = ConstantValue.AUTH + userPreference.getToken()
 
     suspend fun postLogin(loginBody: LoginBody) : Flow<LoginResponse> {
-        val result : LoginResponse = apiService.postLoginUser(loginBody)
-        userPreference.login(result.data?.token.toString())
-        return flowOf(result)
+        val response = apiService.postLoginUser(loginBody)
+        if (response.isSuccessful && response.body() != null && response.code() != 401){
+            val result : LoginResponse = response.body()!!
+            userPreference.login(result.data?.token.toString())
+            return flowOf(result)
+        } else {
+            val errResponse = Gson().fromJson(response.errorBody()?.string(), CommonResponse::class.java)
+            val result : LoginResponse = LoginResponse(
+                data = null,
+                error = errResponse.error,
+                message = errResponse.message
+            )
+            return flowOf(result)
+        }
     }
 
     suspend fun postRegister(registerBody: RegisterBody) : Flow<CommonResponse> {

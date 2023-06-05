@@ -10,6 +10,8 @@ import com.capstoneC23PS274.segar.data.remote.response.HistoryResponse
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
 import com.capstoneC23PS274.segar.data.remote.response.ProfileResponse
 import okhttp3.MultipartBody
+import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -22,7 +24,7 @@ interface ApiService{
     @POST("auth/login")
     suspend fun postLoginUser(
         @Body loginBody: LoginBody
-    ) : LoginResponse
+    ) : Response<LoginResponse>
 
     @POST("auth/register")
     suspend fun postRegisterUser(
