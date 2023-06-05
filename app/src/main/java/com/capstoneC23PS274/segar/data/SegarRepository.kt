@@ -3,14 +3,21 @@ package com.capstoneC23PS274.segar.data
 import com.capstoneC23PS274.segar.data.preference.UserPreference
 import com.capstoneC23PS274.segar.data.remote.body.LoginBody
 import com.capstoneC23PS274.segar.data.remote.body.RegisterBody
+import com.capstoneC23PS274.segar.data.remote.response.CheckResponse
+import com.capstoneC23PS274.segar.data.remote.response.CheckResult
 import com.capstoneC23PS274.segar.data.remote.response.CommonResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictDetailItem
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryItem
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
 import com.capstoneC23PS274.segar.data.remote.retrofit.ApiService
+import com.capstoneC23PS274.segar.ui.screen.camera.reduceFileImage
 import com.capstoneC23PS274.segar.utils.ConstantValue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 class SegarRepository (private val apiService: ApiService, private val userPreference: UserPreference) {
 
@@ -34,6 +41,18 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
 
     suspend fun getDictionaryDetail(id: String) : Flow<DictDetailItem>{
         val result : DictDetailItem = apiService.getDictDetail(token, id).data
+        return flowOf(result)
+    }
+
+    suspend fun postCheckImage(file: File) : Flow<CheckResult>{
+        val uploadFile = reduceFileImage(file)
+        val requestImageFile = uploadFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val imageMultipart : MultipartBody.Part = MultipartBody.Part.createFormData(
+            "image",
+            uploadFile.name,
+            requestImageFile
+        )
+        val result : CheckResult = apiService.postCheckImage(token, imageMultipart).data
         return flowOf(result)
     }
 }

@@ -2,14 +2,18 @@ package com.capstoneC23PS274.segar.data.remote.retrofit
 
 import com.capstoneC23PS274.segar.data.remote.body.LoginBody
 import com.capstoneC23PS274.segar.data.remote.body.RegisterBody
+import com.capstoneC23PS274.segar.data.remote.response.CheckResponse
 import com.capstoneC23PS274.segar.data.remote.response.CommonResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryDetailResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryResponse
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface ApiService{
@@ -33,4 +37,11 @@ interface ApiService{
         @Header("Authorization") token: String,
         @Path("id") id: String
     ) : DictionaryDetailResponse
+
+    @Multipart
+    @POST("predictions")
+    suspend fun postCheckImage(
+        @Header("Authorization") token: String,
+        @Part image: MultipartBody.Part
+    ) : CheckResponse
 }
