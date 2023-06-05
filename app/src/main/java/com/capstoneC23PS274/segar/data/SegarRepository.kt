@@ -3,7 +3,6 @@ package com.capstoneC23PS274.segar.data
 import com.capstoneC23PS274.segar.data.preference.UserPreference
 import com.capstoneC23PS274.segar.data.remote.body.LoginBody
 import com.capstoneC23PS274.segar.data.remote.body.RegisterBody
-import com.capstoneC23PS274.segar.data.remote.response.CheckResponse
 import com.capstoneC23PS274.segar.data.remote.response.CheckResult
 import com.capstoneC23PS274.segar.data.remote.response.CommonResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictDetailItem
@@ -28,18 +27,18 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
 
     suspend fun postLogin(loginBody: LoginBody) : Flow<LoginResponse> {
         val response = apiService.postLoginUser(loginBody)
-        if (response.isSuccessful && response.body() != null && response.code() != 401){
+        return if (response.isSuccessful && response.body() != null && response.code() != 401){
             val result : LoginResponse = response.body()!!
             userPreference.login(result.data?.token.toString())
-            return flowOf(result)
+            flowOf(result)
         } else {
             val errResponse = Gson().fromJson(response.errorBody()?.string(), CommonResponse::class.java)
-            val result : LoginResponse = LoginResponse(
+            val result = LoginResponse(
                 data = null,
                 error = errResponse.error,
                 message = errResponse.message
             )
-            return flowOf(result)
+            flowOf(result)
         }
     }
 

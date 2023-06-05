@@ -68,7 +68,7 @@ class LoginViewmodel (private val repository: SegarRepository) : ViewModel() {
         viewModelScope.launch {
             _errorMessage.value = message
             _errorShow.value = true
-            delay(1000)
+            delay(2000)
             _errorShow.value = false
         }
     }
