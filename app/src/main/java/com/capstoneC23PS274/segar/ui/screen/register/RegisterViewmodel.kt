@@ -36,6 +36,9 @@ class RegisterViewmodel (private val repository: SegarRepository) : ViewModel() 
     private val _canClick = mutableStateOf(false)
     val canClick : State<Boolean> get() = _canClick
 
+    private val _loading = mutableStateOf(false)
+    val loading : State<Boolean> get() = _loading
+
     private lateinit var job: Job
 
     fun updateUsername(newString: String){
@@ -56,6 +59,7 @@ class RegisterViewmodel (private val repository: SegarRepository) : ViewModel() 
     }
 
     fun registerUser(){
+        _loading.value = true
         val registerBody = RegisterBody(username.value, email.value, password.value)
         val job = viewModelScope.launch {
             repository.postRegister(registerBody)
@@ -65,6 +69,7 @@ class RegisterViewmodel (private val repository: SegarRepository) : ViewModel() 
                 .collect { data ->
                     _registerResult.value = UiState.Success(data)
                 }
+            _loading.value = false
         }
     }
 

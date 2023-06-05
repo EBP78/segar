@@ -1,5 +1,7 @@
 package com.capstoneC23PS274.segar.ui.screen.dictdetail
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.capstoneC23PS274.segar.data.SegarRepository
@@ -15,7 +17,11 @@ class DictDetailViewmodel (private val repository: SegarRepository) : ViewModel(
     private val _dictionaryData : MutableStateFlow<UiState<DictDetailItem>> = MutableStateFlow(UiState.Loading)
     val dictionaryData : StateFlow<UiState<DictDetailItem>> get() = _dictionaryData
 
+    private val _loading = mutableStateOf(false)
+    val loading : State<Boolean> get() = _loading
+
     fun getDictionaryDetail(id: String){
+        _loading.value = true
         viewModelScope.launch {
             repository.getDictionaryDetail(id)
                 .catch {
@@ -24,6 +30,7 @@ class DictDetailViewmodel (private val repository: SegarRepository) : ViewModel(
                 .collect { data ->
                     _dictionaryData.value = UiState.Success(data)
                 }
+            _loading.value = false
         }
     }
 }

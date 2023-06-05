@@ -26,6 +26,7 @@ import com.capstoneC23PS274.segar.ui.theme.MainGreen
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 import androidx.compose.runtime.getValue
 import com.capstoneC23PS274.segar.ui.common.UiState
+import com.capstoneC23PS274.segar.ui.component.LoadingAnimation
 
 @Composable
 fun RegisterScreen(
@@ -41,7 +42,10 @@ fun RegisterScreen(
     val password by viewmodel.password
     val confirmPassword by viewmodel.confirmPassword
     val canClick by viewmodel.canClick
-    Box {
+    val loading by viewmodel.loading
+    Box (
+        modifier = modifier.fillMaxSize()
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -110,6 +114,10 @@ fun RegisterScreen(
                 }
             }
         }
+        LoadingAnimation(
+            isDisplayed = loading,
+            modifier = Modifier.align(Alignment.Center)
+        )
     }
 }
     @Composable
