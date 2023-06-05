@@ -1,21 +1,61 @@
 package com.capstoneC23PS274.segar.ui.screen.history
 
+import android.content.Context
+import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.capstoneC23PS274.segar.data.remote.response.HistoryResponseItem
 import com.capstoneC23PS274.segar.ui.component.HistoryListItem
+import com.capstoneC23PS274.segar.ui.component.LoadingAnimation
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
+import com.capstoneC23PS274.segar.di.Injection
+import com.capstoneC23PS274.segar.ui.common.UiState
+import com.capstoneC23PS274.segar.utils.ViewModelFactory
 
 @Composable
 fun HistoryScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewmodel: HistoryViewmodel = viewModel(
+        factory = ViewModelFactory(Injection.provideRepository(LocalContext.current))
+    ),
+    context : Context = LocalContext.current
 ) {
-    // getting data from viewmodel
-    // example of history item use
-    val historyItem = HistoryResponseItem("001", "sawi", "https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg", "80% Seggar", "10 oktober 2023")
-    HistoryListItem(
-        itemData = historyItem,
-        modifier = Modifier.padding(10.dp)
-    )
+    val loading by viewmodel.loading
+    Box(modifier = modifier.fillMaxSize()) {
+        viewmodel.history.collectAsState(initial = UiState.Loading).value.let { uiState ->
+            when(uiState){
+                is UiState.Loading -> {
+                    viewmodel.getHistory()
+                }
+                is UiState.Success -> {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(6.dp),
+                        modifier = Modifier.padding(10.dp)
+                    ) {
+                        items(uiState.data) { HistoryItem ->
+                            HistoryListItem(itemData = HistoryItem)
+                        }
+                    }
+                }
+                is UiState.Error -> {
+                    Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        LoadingAnimation(
+            isDisplayed = loading,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
 }

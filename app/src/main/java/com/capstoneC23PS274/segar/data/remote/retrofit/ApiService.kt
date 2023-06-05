@@ -6,6 +6,7 @@ import com.capstoneC23PS274.segar.data.remote.response.CheckResponse
 import com.capstoneC23PS274.segar.data.remote.response.CommonResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryDetailResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryResponse
+import com.capstoneC23PS274.segar.data.remote.response.HistoryResponse
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Body
@@ -37,6 +38,11 @@ interface ApiService{
         @Header("Authorization") token: String,
         @Path("id") id: String
     ) : DictionaryDetailResponse
+
+    @GET("predictions")
+    suspend fun getHistory(
+        @Header("Authorization") token: String
+    ) : HistoryResponse
 
     @Multipart
     @POST("predictions")

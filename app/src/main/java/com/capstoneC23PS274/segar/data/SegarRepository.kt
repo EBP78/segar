@@ -8,6 +8,7 @@ import com.capstoneC23PS274.segar.data.remote.response.CheckResult
 import com.capstoneC23PS274.segar.data.remote.response.CommonResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictDetailItem
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryItem
+import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
 import com.capstoneC23PS274.segar.data.remote.retrofit.ApiService
 import com.capstoneC23PS274.segar.ui.screen.camera.reduceFileImage
@@ -41,6 +42,11 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
 
     suspend fun getDictionaryDetail(id: String) : Flow<DictDetailItem>{
         val result : DictDetailItem = apiService.getDictDetail(token, id).data
+        return flowOf(result)
+    }
+
+    suspend fun getHistory() : Flow<List<HistoryItem>>{
+        val result : List<HistoryItem> = apiService.getHistory(token).data
         return flowOf(result)
     }
 
