@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.capstoneC23PS274.segar.data.remote.response.HistoryResponseItem
+import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
 import com.capstoneC23PS274.segar.ui.theme.MainGreen
 
 @Composable
 fun HistoryListItem(
-    itemData: HistoryResponseItem,
+    itemData: HistoryItem,
     modifier: Modifier = Modifier,
 ) {
     Card (
@@ -31,7 +31,7 @@ fun HistoryListItem(
         Row {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(itemData.ImageUrl)
+                    .data(itemData.image)
                     .crossfade(true)
                     .build(),
                 contentDescription = null,
@@ -44,7 +44,7 @@ fun HistoryListItem(
             )
             Column(modifier = Modifier.padding(8.dp)) {
                 Text(
-                    text = itemData.name,
+                    text = itemData.name.toString(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 30.sp
@@ -52,7 +52,7 @@ fun HistoryListItem(
 
 
                 Text(
-                    text = itemData.result,
+                    text = itemData.score.toString(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 30.sp,
@@ -65,7 +65,7 @@ fun HistoryListItem(
                 )
 
                 Text(
-                    text = itemData.date,
+                    text = itemData.createdAt.toString(),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
@@ -81,7 +81,7 @@ fun HistoryListItem(
 @Preview(showBackground = true)
 fun HistoryPreview() {
     MaterialTheme {
-        val historyItem = HistoryResponseItem("001", "sawi", "https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg", "80% Seggar", "10 oktober 2023")
+        val historyItem = HistoryItem(85,"https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg", "80% Seggar", "orang", 1, "Sawi", "oaisdfoi23")
         HistoryListItem(
             itemData = historyItem,
             modifier = Modifier
