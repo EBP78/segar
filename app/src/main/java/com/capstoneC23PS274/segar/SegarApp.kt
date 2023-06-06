@@ -144,11 +144,7 @@ fun SegarApp(
                         }
                     }
                 }, goToRegister = {
-                    navController.navigate(Screen.Register.route){
-                        popUpTo(navController.graph.id) {
-                            inclusive = true
-                        }
-                    }
+                    navController.navigate(Screen.Register.route)
                 })
             }
             composable(Screen.Register.route){
