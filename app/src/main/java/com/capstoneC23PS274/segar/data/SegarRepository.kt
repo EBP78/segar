@@ -7,6 +7,7 @@ import com.capstoneC23PS274.segar.data.remote.response.CheckResponse
 import com.capstoneC23PS274.segar.data.remote.response.CheckResult
 import com.capstoneC23PS274.segar.data.remote.response.CommonResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictDetailItem
+import com.capstoneC23PS274.segar.data.remote.response.DictionaryDetailResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryItem
 import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
@@ -16,6 +17,7 @@ import com.capstoneC23PS274.segar.ui.screen.camera.reduceFileImage
 import com.capstoneC23PS274.segar.utils.ConstantValue
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -52,9 +54,19 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
         return flowOf(result)
     }
 
-    suspend fun getDictionaryDetail(id: String) : Flow<DictDetailItem>{
-        val result : DictDetailItem = apiService.getDictDetail(token, id).data
-        return flowOf(result)
+    suspend fun getDictionaryDetail(id: String) : Flow<DictionaryDetailResponse>{
+        val response = apiService.getDictDetail(token, id)
+        return if (response.isSuccessful && response.body() != null) {
+            val result : DictionaryDetailResponse = response.body()!!
+            flowOf(result)
+        } else {
+            val errResponse = getErrBody(response.errorBody()?.string())
+            val result = DictionaryDetailResponse(
+                error = errResponse.error,
+                message = errResponse.message
+            )
+            flowOf(result)
+        }
     }
 
     suspend fun getHistory() : Flow<List<HistoryItem>>{

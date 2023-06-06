@@ -40,7 +40,7 @@ interface ApiService{
     suspend fun getDictDetail(
         @Header("Authorization") token: String,
         @Path("id") id: String
-    ) : DictionaryDetailResponse
+    ) : Response<DictionaryDetailResponse>
 
     @GET("predictions")
     suspend fun getHistory(
