@@ -48,8 +48,14 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
     }
 
     suspend fun postRegister(registerBody: RegisterBody) : Flow<CommonResponse> {
-        val result : CommonResponse = apiService.postRegisterUser(registerBody)
-        return  flowOf(result)
+        val response = apiService.postRegisterUser(registerBody)
+        return if (response.isSuccessful) {
+            val result : CommonResponse = response.body()!!
+            flowOf(result)
+        } else {
+            val errResponse = getErrBody(response.errorBody()?.string())
+            flowOf(errResponse)
+        }
     }
 
     suspend fun getDictionary() : Flow<DictionaryResponse>{

@@ -26,6 +26,7 @@ import com.capstoneC23PS274.segar.ui.theme.MainGreen
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 import androidx.compose.runtime.getValue
 import com.capstoneC23PS274.segar.ui.common.UiState
+import com.capstoneC23PS274.segar.ui.component.ErrorModal
 import com.capstoneC23PS274.segar.ui.component.LoadingAnimation
 
 @Composable
@@ -43,6 +44,8 @@ fun RegisterScreen(
     val confirmPassword by viewmodel.confirmPassword
     val canClick by viewmodel.canClick
     val loading by viewmodel.loading
+    val errShow by viewmodel.errorShow
+    val errMess by viewmodel.errorMessage
     Box (
         modifier = modifier.fillMaxSize()
     ) {
@@ -109,6 +112,7 @@ fun RegisterScreen(
                         viewmodel.isFinished()
                     }
                     is UiState.Error -> {
+                        viewmodel.showError(uiState.errorMessage)
                         Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -116,6 +120,11 @@ fun RegisterScreen(
         }
         LoadingAnimation(
             isDisplayed = loading,
+            modifier = Modifier.align(Alignment.Center)
+        )
+        ErrorModal(
+            message = errMess,
+            isDisplayed = errShow,
             modifier = Modifier.align(Alignment.Center)
         )
     }

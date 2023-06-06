@@ -29,7 +29,7 @@ interface ApiService{
     @POST("auth/register")
     suspend fun postRegisterUser(
         @Body registerBody: RegisterBody
-    ) : CommonResponse
+    ) : Response<CommonResponse>
 
     @GET("dictionaries")
     suspend fun getAllDict(
