@@ -48,6 +48,7 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
+                .padding(bottom = 5.dp)
         )
         Image(
             painterResource(R.drawable.tagline),
