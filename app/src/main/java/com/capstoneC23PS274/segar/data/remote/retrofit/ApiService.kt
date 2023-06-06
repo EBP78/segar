@@ -10,6 +10,8 @@ import com.capstoneC23PS274.segar.data.remote.response.HistoryResponse
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
 import com.capstoneC23PS274.segar.data.remote.response.ProfileResponse
 import okhttp3.MultipartBody
+import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -22,38 +24,38 @@ interface ApiService{
     @POST("auth/login")
     suspend fun postLoginUser(
         @Body loginBody: LoginBody
-    ) : LoginResponse
+    ) : Response<LoginResponse>
 
     @POST("auth/register")
     suspend fun postRegisterUser(
         @Body registerBody: RegisterBody
-    ) : CommonResponse
+    ) : Response<CommonResponse>
 
     @GET("dictionaries")
     suspend fun getAllDict(
         @Header("Authorization") token: String
-    ) : DictionaryResponse
+    ) : Response<DictionaryResponse>
 
     @GET("dictionaries/{id}")
     suspend fun getDictDetail(
         @Header("Authorization") token: String,
         @Path("id") id: String
-    ) : DictionaryDetailResponse
+    ) : Response<DictionaryDetailResponse>
 
     @GET("predictions")
     suspend fun getHistory(
         @Header("Authorization") token: String
-    ) : HistoryResponse
+    ) : Response<HistoryResponse>
 
     @GET("auth/user")
     suspend fun getUserProfile(
         @Header("Authorization") token: String
-    ) : ProfileResponse
+    ) : Response<ProfileResponse>
 
     @Multipart
     @POST("predictions")
     suspend fun postCheckImage(
         @Header("Authorization") token: String,
         @Part image: MultipartBody.Part
-    ) : CheckResponse
+    ) : Response<CheckResponse>
 }

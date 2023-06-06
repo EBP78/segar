@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.capstoneC23PS274.segar.di.Injection
 import com.capstoneC23PS274.segar.ui.common.UiState
+import com.capstoneC23PS274.segar.ui.component.ErrorModal
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 
 @Composable
@@ -37,6 +38,8 @@ fun ProfileScreen(
     context: Context = LocalContext.current
 ) {
     val loading by viewmodel.loading
+    val errMess by viewmodel.errorMessage
+    val errShow by viewmodel.errorShow
     Box (modifier = modifier.fillMaxSize()) {
         viewmodel.userData.collectAsState(initial = UiState.Loading).value.let { uiState ->
             when(uiState) {
@@ -44,95 +47,105 @@ fun ProfileScreen(
                     viewmodel.getUserData()
                 }
                 is UiState.Success -> {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(10.dp)
-                    ) {
-                        Text(
-                            text = "Username",
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 20.sp
-                        )
-                        Text(
-                            text = uiState.data.username.toString(),
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "Email",
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 20.sp
-                        )
-                        Text(
-                            text = uiState.data.email.toString(),
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "Join At",
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 20.sp
-                        )
-                        Text(
-                            text = uiState.data.joinedAt.toString(),
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Button(
-                            onClick = toFaq,
-                            colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
+                    if (uiState.data.data != null){
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
-                                .widthIn(min = 150.dp)
+                                .fillMaxSize()
                                 .padding(10.dp)
                         ) {
                             Text(
-                                text = "FAQ",
+                                text = "Username",
                                 maxLines = 2,
                                 overflow = TextOverflow.Ellipsis,
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp,
+                                fontSize = 20.sp
                             )
-                        }
-                        Button(
-                            onClick = {
-                                viewmodel.logout()
-                                logout()
-                            },
-                            colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
-                            modifier = Modifier
-                                .widthIn(min = 150.dp)
-                                .padding(10.dp)
-                        ) {
                             Text(
-                                text = "Logout",
+                                text = uiState.data.data.username.toString(),
                                 maxLines = 2,
                                 overflow = TextOverflow.Ellipsis,
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp,
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.Bold
                             )
+                            Text(
+                                text = "Email",
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                fontSize = 20.sp
+                            )
+                            Text(
+                                text = uiState.data.data.email.toString(),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "Join At",
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                fontSize = 20.sp
+                            )
+                            Text(
+                                text = uiState.data.data.joinedAt.toString(),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Button(
+                                onClick = toFaq,
+                                colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
+                                modifier = Modifier
+                                    .widthIn(min = 150.dp)
+                                    .padding(10.dp)
+                            ) {
+                                Text(
+                                    text = "FAQ",
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 18.sp,
+                                )
+                            }
+                            Button(
+                                onClick = {
+                                    viewmodel.logout()
+                                    logout()
+                                },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
+                                modifier = Modifier
+                                    .widthIn(min = 150.dp)
+                                    .padding(10.dp)
+                            ) {
+                                Text(
+                                    text = "Logout",
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 18.sp,
+                                )
+                            }
                         }
+                    } else {
+                        viewmodel.showError(uiState.data.message.toString())
                     }
                 }
                 is UiState.Error -> {
+                    viewmodel.showError(uiState.errorMessage)
                     Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
                 }
             }
         }
         LoadingAnimation(
             isDisplayed = loading,
+            modifier = Modifier.align(Alignment.Center)
+        )
+        ErrorModal(
+            message = errMess,
+            isDisplayed = errShow,
             modifier = Modifier.align(Alignment.Center)
         )
     }

@@ -30,6 +30,7 @@ import com.capstoneC23PS274.segar.ui.theme.MainGreen
 import com.capstoneC23PS274.segar.ui.theme.Typography
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 import androidx.compose.runtime.getValue
+import com.capstoneC23PS274.segar.ui.component.ErrorModal
 
 @Composable
 fun DictDetailScreen (
@@ -41,6 +42,8 @@ fun DictDetailScreen (
     context: Context = LocalContext.current
 ) {
     val loading by viewmodel.loading
+    val errMess by viewmodel.errorMessage
+    val errShow by viewmodel.errorShow
     Box(modifier = modifier.fillMaxSize()) {
         viewmodel.dictionaryData.collectAsState(initial = UiState.Loading).value.let { uiState ->
             when(uiState) {
@@ -48,71 +51,81 @@ fun DictDetailScreen (
                     viewmodel.getDictionaryDetail(dictItemId)
                 }
                 is UiState.Success -> {
-                    LazyColumn (
-                        modifier = Modifier
-                            .fillMaxSize()
-                    ) {
-                        item {
-                            // has to be changed to a list or make it only one image
-                            val imageList = listOf(uiState.data.image.toString(),uiState.data.image.toString())
-                            ImageCarousell(urlList = imageList)
+                    if (uiState.data.data != null){
+                        LazyColumn (
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            item {
+                                // has to be changed to a list or make it only one image
+                                val imageList = listOf(uiState.data.data.image.toString(),uiState.data.data.image.toString())
+                                ImageCarousell(urlList = imageList)
+                            }
+                            item {
+                                Text(
+                                    text = uiState.data.data.name.toString(),
+                                    style = Typography.h5,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                            item {
+                                Text(
+                                    text = uiState.data.data.scientificName.toString(),
+                                    style = Typography.h6,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                            item {
+                                Divider(
+                                    color = MainGreen,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 10.dp, bottom = 10.dp)
+                                        .height(5.dp)
+                                )
+                            }
+                            item {
+                                DetailTextItem(title = "Famili", content = uiState.data.data.famili.toString())
+                            }
+                            item {
+                                DetailTextItem(title = "Bagian yang dapat dikonsumsi", content = uiState.data.data.consumablePart.toString())
+                            }
+                            item {
+                                DetailTextItem(title = "Tanah Asal", content = uiState.data.data.origin.toString())
+                            }
+                            item {
+                                Divider(
+                                    color = MainGreen,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 10.dp, bottom = 10.dp)
+                                        .height(5.dp)
+                                )
+                            }
+                            item {
+                                DetailTextItem(title = "Informasi Lainnya", content = uiState.data.data.briefDesc.toString())
+                            }
                         }
-                        item {
-                            Text(
-                                text = uiState.data.name.toString(),
-                                style = Typography.h5,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                        item {
-                            Text(
-                                text = uiState.data.scientificName.toString(),
-                                style = Typography.h6,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                        item {
-                            Divider(
-                                color = MainGreen,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 10.dp, bottom = 10.dp)
-                                    .height(5.dp)
-                            )
-                        }
-                        item {
-                            DetailTextItem(title = "Famili", content = uiState.data.famili.toString())
-                        }
-                        item {
-                            DetailTextItem(title = "Bagian yang dapat dikonsumsi", content = uiState.data.consumablePart.toString())
-                        }
-                        item {
-                            DetailTextItem(title = "Tanah Asal", content = uiState.data.origin.toString())
-                        }
-                        item {
-                            Divider(
-                                color = MainGreen,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 10.dp, bottom = 10.dp)
-                                    .height(5.dp)
-                            )
-                        }
-                        item {
-                            DetailTextItem(title = "Informasi Lainnya", content = uiState.data.briefDesc.toString())
-                        }
+                    } else {
+                        viewmodel.showError(uiState.data.message.toString())
                     }
                 }
                 is UiState.Error -> {
+                    viewmodel.showError(uiState.errorMessage)
                     Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
                 }
             }
         }
         LoadingAnimation(
             isDisplayed = loading,
+            modifier = Modifier.align(Alignment.Center)
+        )
+        ErrorModal(
+            message = errMess,
+            isDisplayed = errShow,
             modifier = Modifier.align(Alignment.Center)
         )
     }

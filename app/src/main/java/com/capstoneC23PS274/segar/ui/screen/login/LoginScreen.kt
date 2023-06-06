@@ -34,6 +34,7 @@ import com.capstoneC23PS274.segar.ui.theme.MainGreen
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 import androidx.compose.runtime.getValue
 import com.capstoneC23PS274.segar.ui.common.UiState
+import com.capstoneC23PS274.segar.ui.component.ErrorModal
 import com.capstoneC23PS274.segar.ui.component.LoadingAnimation
 
 @Composable
@@ -49,6 +50,8 @@ fun LoginScreen(
     val email by viewModel.email
     val password by viewModel.password
     val loading by viewModel.loading
+    val errShow by viewModel.errorShow
+    val errMess by viewModel.errorMessage
     Box (
         modifier = modifier.fillMaxSize()
     ) {
@@ -112,10 +115,16 @@ fun LoginScreen(
                         }
                     }
                     is UiState.Success -> {
-                        goToMain()
-                        viewModel.isFinished()
+                        if (uiState.data.data != null){
+                            goToMain()
+                            viewModel.isFinished()
+                        } else {
+                            viewModel.showError(uiState.data.message.toString())
+                            viewModel.isFinished()
+                        }
                     }
                     is UiState.Error -> {
+                        viewModel.showError(uiState.errorMessage)
                         Toast.makeText(context,"gagal", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -140,6 +149,11 @@ fun LoginScreen(
         }
         LoadingAnimation(
             isDisplayed = loading,
+            modifier = Modifier.align(Alignment.Center)
+        )
+        ErrorModal(
+            message = errMess,
+            isDisplayed = errShow,
             modifier = Modifier.align(Alignment.Center)
         )
     }
