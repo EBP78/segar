@@ -50,7 +50,7 @@ interface ApiService{
     @GET("auth/user")
     suspend fun getUserProfile(
         @Header("Authorization") token: String
-    ) : ProfileResponse
+    ) : Response<ProfileResponse>
 
     @Multipart
     @POST("predictions")

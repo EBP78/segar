@@ -13,6 +13,7 @@ import com.capstoneC23PS274.segar.data.remote.response.DictionaryResponse
 import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
 import com.capstoneC23PS274.segar.data.remote.response.HistoryResponse
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
+import com.capstoneC23PS274.segar.data.remote.response.ProfileResponse
 import com.capstoneC23PS274.segar.data.remote.response.UserData
 import com.capstoneC23PS274.segar.data.remote.retrofit.ApiService
 import com.capstoneC23PS274.segar.ui.screen.camera.reduceFileImage
@@ -97,9 +98,19 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
         }
     }
 
-    suspend fun getUserDetail() : Flow<UserData> {
-        val result : UserData = apiService.getUserProfile(token).data
-        return flowOf(result)
+    suspend fun getUserDetail() : Flow<ProfileResponse> {
+        val response = apiService.getUserProfile(token)
+        return if (response.isSuccessful && response.body() != null) {
+            val result : ProfileResponse = response.body()!!
+            flowOf(result)
+        } else {
+            val errResponse = getErrBody(response.errorBody()?.string())
+            val result = ProfileResponse(
+                error = errResponse.error,
+                message = errResponse.message
+            )
+            flowOf(result)
+        }
     }
 
     suspend fun postCheckImage(file: File) : Flow<CheckResponse>{
