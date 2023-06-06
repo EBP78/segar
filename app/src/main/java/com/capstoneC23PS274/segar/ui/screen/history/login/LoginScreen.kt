@@ -1,7 +1,8 @@
-package com.capstoneC23PS274.segar.ui.screen.login
+package com.capstoneC23PS274.segar.ui.screen.history.login
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +34,8 @@ import com.capstoneC23PS274.segar.ui.component.FormInput
 import com.capstoneC23PS274.segar.ui.theme.MainGreen
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.painterResource
+import com.capstoneC23PS274.segar.R
 import com.capstoneC23PS274.segar.ui.common.UiState
 import com.capstoneC23PS274.segar.ui.component.ErrorModal
 import com.capstoneC23PS274.segar.ui.component.LoadingAnimation
@@ -61,16 +64,13 @@ fun LoginScreen(
                 .fillMaxSize()
                 .padding(10.dp)
         ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg")
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null,
+            Image(
+                painterResource(R.drawable.logo_capstone),
+                contentDescription = "app logo",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .width(200.dp)
-                    .height(200.dp)
+                    .width(250.dp)
+                    .height(250.dp)
                     .padding(50.dp)
             )
 

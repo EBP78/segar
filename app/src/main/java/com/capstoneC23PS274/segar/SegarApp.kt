@@ -28,10 +28,11 @@ import com.capstoneC23PS274.segar.ui.screen.dictionary.DictionaryScreen
 import com.capstoneC23PS274.segar.ui.screen.faq.FAQScreen
 import com.capstoneC23PS274.segar.ui.screen.history.HistoryScreen
 import com.capstoneC23PS274.segar.ui.screen.home.HomeScreen
-import com.capstoneC23PS274.segar.ui.screen.login.LoginScreen
+import com.capstoneC23PS274.segar.ui.screen.history.login.LoginScreen
 import com.capstoneC23PS274.segar.ui.screen.profile.ProfileScreen
 import com.capstoneC23PS274.segar.ui.screen.register.RegisterScreen
 import com.capstoneC23PS274.segar.ui.screen.result.ResultScreen
+import com.capstoneC23PS274.segar.ui.screen.splash.SplashScreen
 import com.capstoneC23PS274.segar.ui.theme.SegarTheme
 
 @Composable
@@ -42,12 +43,11 @@ fun SegarApp(
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    // get this from preference later
-    val isLogin = false
     val noBottomNav = listOf<String>(
         Screen.Login.route,
         Screen.Register.route,
-        Screen.Check.route
+        Screen.Check.route,
+        Screen.Splash.route
     )
     Scaffold(
         bottomBar = {
@@ -74,7 +74,7 @@ fun SegarApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = if(isLogin) Screen.Home.route else Screen.Login.route,
+            startDestination = Screen.Splash.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) {
@@ -144,16 +144,27 @@ fun SegarApp(
                         }
                     }
                 }, goToRegister = {
-                    navController.navigate(Screen.Register.route){
+                    navController.navigate(Screen.Register.route)
+                })
+            }
+            composable(Screen.Register.route){
+                RegisterScreen(goToLogin = {
+                    navController.navigate(Screen.Login.route){
                         popUpTo(navController.graph.id) {
                             inclusive = true
                         }
                     }
                 })
             }
-            composable(Screen.Register.route){
-                RegisterScreen(goToLogin = {
+            composable(Screen.Splash.route){
+                SplashScreen(toLogin = {
                     navController.navigate(Screen.Login.route){
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                }, toHome = {
+                    navController.navigate(Screen.Home.route){
                         popUpTo(navController.graph.id) {
                             inclusive = true
                         }

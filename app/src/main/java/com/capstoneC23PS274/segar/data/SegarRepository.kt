@@ -145,6 +145,10 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
         userPreference.logout()
     }
 
+    fun isLogin() : Boolean{
+        return userPreference.checkIsLogin()
+    }
+
     private fun getErrBody(errBody: String?) : CommonResponse{
         val gson = Gson()
         return gson.fromJson(errBody, CommonResponse::class.java)
