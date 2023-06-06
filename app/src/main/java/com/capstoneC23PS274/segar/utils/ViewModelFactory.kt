@@ -7,9 +7,10 @@ import com.capstoneC23PS274.segar.ui.screen.camera.CameraViewmodel
 import com.capstoneC23PS274.segar.ui.screen.dictdetail.DictDetailViewmodel
 import com.capstoneC23PS274.segar.ui.screen.dictionary.DictionaryViewmodel
 import com.capstoneC23PS274.segar.ui.screen.history.HistoryViewmodel
-import com.capstoneC23PS274.segar.ui.screen.login.LoginViewmodel
+import com.capstoneC23PS274.segar.ui.screen.history.login.LoginViewmodel
 import com.capstoneC23PS274.segar.ui.screen.profile.ProfileViewmodel
 import com.capstoneC23PS274.segar.ui.screen.register.RegisterViewmodel
+import com.capstoneC23PS274.segar.ui.screen.splash.SplashViewmodel
 
 class ViewModelFactory (private val segarRepository: SegarRepository) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
@@ -28,6 +29,8 @@ class ViewModelFactory (private val segarRepository: SegarRepository) : ViewMode
             return HistoryViewmodel(segarRepository) as T
         } else if (modelClass.isAssignableFrom(ProfileViewmodel::class.java)){
             return ProfileViewmodel(segarRepository) as T
+        } else if (modelClass.isAssignableFrom(SplashViewmodel::class.java)){
+            return SplashViewmodel(segarRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
