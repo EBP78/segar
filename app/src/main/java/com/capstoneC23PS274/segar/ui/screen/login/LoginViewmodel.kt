@@ -53,15 +53,21 @@ class LoginViewmodel (private val repository: SegarRepository) : ViewModel() {
         _loading.value = true
         val loginBody = LoginBody(email.value, password.value)
         job = viewModelScope.launch {
-            repository.postLogin(loginBody)
-                .catch {
-                    _loginResult.value = UiState.Error(it.message.toString())
-                }
-                .cancellable().collect { data ->
-                    _loginResult.value = UiState.Success(data)
-                }
-            _loading.value = false
+            try {
+                repository.postLogin(loginBody)
+                    .catch {
+                        _loginResult.value = UiState.Error(it.message.toString())
+                    }
+                    .cancellable().collect { data ->
+                        _loginResult.value = UiState.Success(data)
+                    }
+            } catch (e: Exception) {
+                _loginResult.value = UiState.Error("Unexpected Error")
+            } finally {
+                _loading.value = false
+            }
         }
+        _loginResult.value = UiState.Loading
     }
 
     fun showError(message: String){

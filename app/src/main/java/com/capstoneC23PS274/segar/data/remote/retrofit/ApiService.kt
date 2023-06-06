@@ -57,5 +57,5 @@ interface ApiService{
     suspend fun postCheckImage(
         @Header("Authorization") token: String,
         @Part image: MultipartBody.Part
-    ) : CheckResponse
+    ) : Response<CheckResponse>
 }

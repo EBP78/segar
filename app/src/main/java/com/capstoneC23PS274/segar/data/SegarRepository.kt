@@ -3,6 +3,7 @@ package com.capstoneC23PS274.segar.data
 import com.capstoneC23PS274.segar.data.preference.UserPreference
 import com.capstoneC23PS274.segar.data.remote.body.LoginBody
 import com.capstoneC23PS274.segar.data.remote.body.RegisterBody
+import com.capstoneC23PS274.segar.data.remote.response.CheckResponse
 import com.capstoneC23PS274.segar.data.remote.response.CheckResult
 import com.capstoneC23PS274.segar.data.remote.response.CommonResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictDetailItem
@@ -32,9 +33,8 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
             userPreference.login(result.data?.token.toString())
             flowOf(result)
         } else {
-            val errResponse = Gson().fromJson(response.errorBody()?.string(), CommonResponse::class.java)
+            val errResponse = getErrBody(response.errorBody()?.string())
             val result = LoginResponse(
-                data = null,
                 error = errResponse.error,
                 message = errResponse.message
             )
@@ -67,7 +67,7 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
         return flowOf(result)
     }
 
-    suspend fun postCheckImage(file: File) : Flow<CheckResult>{
+    suspend fun postCheckImage(file: File) : Flow<CheckResponse>{
         val uploadFile = reduceFileImage(file)
         val requestImageFile = uploadFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val imageMultipart : MultipartBody.Part = MultipartBody.Part.createFormData(
@@ -75,11 +75,26 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
             uploadFile.name,
             requestImageFile
         )
-        val result : CheckResult = apiService.postCheckImage(token, imageMultipart).data
-        return flowOf(result)
+        val response = apiService.postCheckImage(token, imageMultipart)
+        return if (response.isSuccessful && response.body() != null) {
+            val result: CheckResponse = response.body()!!
+            flowOf(result)
+        } else {
+            val errResponse = getErrBody(response.errorBody()?.string())
+            val result: CheckResponse = CheckResponse(
+                error = errResponse.error,
+                message = errResponse.message
+            )
+            flowOf(result)
+        }
     }
 
     fun logout(){
         userPreference.logout()
+    }
+
+    private fun getErrBody(errBody: String?) : CommonResponse{
+        val gson = Gson()
+        return gson.fromJson(errBody, CommonResponse::class.java)
     }
 }

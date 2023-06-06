@@ -20,6 +20,7 @@ import com.capstoneC23PS274.segar.ui.component.DictionaryItem
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import com.capstoneC23PS274.segar.ui.component.ErrorModal
 import com.capstoneC23PS274.segar.ui.component.LoadingAnimation
 
 @Composable
@@ -32,6 +33,8 @@ fun DictionaryScreen (
     context: Context = LocalContext.current
 ) {
     val loading by viewmodel.loading
+    val errMess by viewmodel.errorMessage
+    val errShow by viewmodel.errorShow
     Box(modifier = modifier.fillMaxSize()){
         viewmodel.dictionary.collectAsState(initial = UiState.Loading).value.let { uiState ->
             when(uiState) {
@@ -39,21 +42,26 @@ fun DictionaryScreen (
                     viewmodel.getAllDictionary()
                 }
                 is UiState.Success -> {
-                    LazyColumn (
-                        verticalArrangement = Arrangement.spacedBy(6.dp),
-                        modifier = Modifier.padding(10.dp)
-                    ){
-                        items(uiState.data) { dictionaryItem ->
-                            DictionaryItem(
-                                itemData = dictionaryItem,
-                                onClick = {
-                                    itemOnClick(dictionaryItem.id.toString())
-                                }
-                            )
+                    if (uiState.data.isNotEmpty()){
+                        LazyColumn (
+                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                            modifier = Modifier.padding(10.dp)
+                        ){
+                            items(uiState.data) { dictionaryItem ->
+                                DictionaryItem(
+                                    itemData = dictionaryItem,
+                                    onClick = {
+                                        itemOnClick(dictionaryItem.id.toString())
+                                    }
+                                )
+                            }
                         }
+                    } else {
+                        viewmodel.showError("gagal mengambil data")
                     }
                 }
                 is UiState.Error -> {
+                    viewmodel.showError(uiState.errorMessage)
                     Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -62,6 +70,10 @@ fun DictionaryScreen (
             isDisplayed = loading,
             modifier = Modifier.align(Alignment.Center)
         )
+        ErrorModal(
+            message = errMess,
+            isDisplayed = errShow,
+            modifier = Modifier.align(Alignment.Center)
+        )
     }
-
 }

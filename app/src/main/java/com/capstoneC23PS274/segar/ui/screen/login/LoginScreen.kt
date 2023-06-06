@@ -124,6 +124,7 @@ fun LoginScreen(
                         }
                     }
                     is UiState.Error -> {
+                        viewModel.showError(uiState.errorMessage)
                         Toast.makeText(context,"gagal", Toast.LENGTH_SHORT).show()
                     }
                 }
