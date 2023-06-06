@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
 import com.capstoneC23PS274.segar.di.Injection
 import com.capstoneC23PS274.segar.ui.common.UiState
+import com.capstoneC23PS274.segar.ui.component.ErrorModal
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 
 @Composable
@@ -32,6 +33,8 @@ fun HistoryScreen(
     context : Context = LocalContext.current
 ) {
     val loading by viewmodel.loading
+    val errShow by viewmodel.errorShow
+    val errMess by viewmodel.errorMessage
     Box(modifier = modifier.fillMaxSize()) {
         viewmodel.history.collectAsState(initial = UiState.Loading).value.let { uiState ->
             when(uiState){
@@ -39,22 +42,32 @@ fun HistoryScreen(
                     viewmodel.getHistory()
                 }
                 is UiState.Success -> {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(6.dp),
-                        modifier = Modifier.padding(10.dp)
-                    ) {
-                        items(uiState.data) { HistoryItem ->
-                            HistoryListItem(itemData = HistoryItem)
+                    if (uiState.data.data != null) {
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(6.dp),
+                            modifier = Modifier.padding(10.dp)
+                        ) {
+                            items(uiState.data.data) { HistoryItem ->
+                                HistoryListItem(itemData = HistoryItem)
+                            }
                         }
+                    } else {
+                        viewmodel.showError(uiState.data.message.toString())
                     }
                 }
                 is UiState.Error -> {
+                    viewmodel.showError(uiState.errorMessage)
                     Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
                 }
             }
         }
         LoadingAnimation(
             isDisplayed = loading,
+            modifier = Modifier.align(Alignment.Center)
+        )
+        ErrorModal(
+            message = errMess,
+            isDisplayed = errShow,
             modifier = Modifier.align(Alignment.Center)
         )
     }

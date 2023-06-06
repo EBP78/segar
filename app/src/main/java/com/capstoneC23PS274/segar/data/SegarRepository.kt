@@ -11,6 +11,7 @@ import com.capstoneC23PS274.segar.data.remote.response.DictionaryDetailResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryItem
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryResponse
 import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
+import com.capstoneC23PS274.segar.data.remote.response.HistoryResponse
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
 import com.capstoneC23PS274.segar.data.remote.response.UserData
 import com.capstoneC23PS274.segar.data.remote.retrofit.ApiService
@@ -80,9 +81,20 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
         }
     }
 
-    suspend fun getHistory() : Flow<List<HistoryItem>>{
-        val result : List<HistoryItem> = apiService.getHistory(token).data
-        return flowOf(result)
+    suspend fun getHistory() : Flow<HistoryResponse>{
+//        val result : List<HistoryItem> = apiService.getHistory(token).data
+        val response = apiService.getHistory(token)
+        return if (response.isSuccessful && response.body() != null){
+            val result : HistoryResponse = response.body()!!
+            flowOf(result)
+        } else {
+            val errResponse = getErrBody(response.errorBody()?.string())
+            val result = HistoryResponse(
+                error = errResponse.error,
+                message = errResponse.message
+            )
+            flowOf(result)
+        }
     }
 
     suspend fun getUserDetail() : Flow<UserData> {

@@ -45,7 +45,7 @@ interface ApiService{
     @GET("predictions")
     suspend fun getHistory(
         @Header("Authorization") token: String
-    ) : HistoryResponse
+    ) : Response<HistoryResponse>
 
     @GET("auth/user")
     suspend fun getUserProfile(
