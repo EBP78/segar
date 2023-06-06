@@ -34,7 +34,7 @@ interface ApiService{
     @GET("dictionaries")
     suspend fun getAllDict(
         @Header("Authorization") token: String
-    ) : DictionaryResponse
+    ) : Response<DictionaryResponse>
 
     @GET("dictionaries/{id}")
     suspend fun getDictDetail(

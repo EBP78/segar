@@ -9,6 +9,7 @@ import com.capstoneC23PS274.segar.data.remote.response.CommonResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictDetailItem
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryDetailResponse
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryItem
+import com.capstoneC23PS274.segar.data.remote.response.DictionaryResponse
 import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
 import com.capstoneC23PS274.segar.data.remote.response.UserData
@@ -49,9 +50,19 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
         return  flowOf(result)
     }
 
-    suspend fun getDictionary() : Flow<List<DictionaryItem>>{
-        val result : List<DictionaryItem> = apiService.getAllDict(token).data
-        return flowOf(result)
+    suspend fun getDictionary() : Flow<DictionaryResponse>{
+        val response = apiService.getAllDict(token)
+        return if (response.isSuccessful && response.body() != null) {
+            val result : DictionaryResponse = response.body()!!
+            flowOf(result)
+        } else {
+            val errResponse = getErrBody(response.errorBody()?.string())
+            val result = DictionaryResponse(
+                error = errResponse.error,
+                message = errResponse.message
+            )
+            flowOf(result)
+        }
     }
 
     suspend fun getDictionaryDetail(id: String) : Flow<DictionaryDetailResponse>{

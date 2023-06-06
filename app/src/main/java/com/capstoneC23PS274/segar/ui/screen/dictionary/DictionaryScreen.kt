@@ -42,12 +42,12 @@ fun DictionaryScreen (
                     viewmodel.getAllDictionary()
                 }
                 is UiState.Success -> {
-                    if (uiState.data.isNotEmpty()){
+                    if (uiState.data.data != null){
                         LazyColumn (
                             verticalArrangement = Arrangement.spacedBy(6.dp),
                             modifier = Modifier.padding(10.dp)
                         ){
-                            items(uiState.data) { dictionaryItem ->
+                            items(uiState.data.data) { dictionaryItem ->
                                 DictionaryItem(
                                     itemData = dictionaryItem,
                                     onClick = {
@@ -57,7 +57,7 @@ fun DictionaryScreen (
                             }
                         }
                     } else {
-                        viewmodel.showError("gagal mengambil data")
+                        viewmodel.showError(uiState.data.message.toString())
                     }
                 }
                 is UiState.Error -> {

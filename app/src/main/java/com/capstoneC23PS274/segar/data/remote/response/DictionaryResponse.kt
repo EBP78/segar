@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class DictionaryResponse(
 
 	@field:SerializedName("data")
-	val data: List<DictionaryItem>,
+	val data: List<DictionaryItem>? = null,
 
 	@field:SerializedName("error")
 	val error: Boolean? = null,
