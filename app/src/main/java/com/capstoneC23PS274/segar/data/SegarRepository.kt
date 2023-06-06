@@ -14,6 +14,7 @@ import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
 import com.capstoneC23PS274.segar.data.remote.response.HistoryResponse
 import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
 import com.capstoneC23PS274.segar.data.remote.response.ProfileResponse
+import com.capstoneC23PS274.segar.data.remote.response.ResultResponse
 import com.capstoneC23PS274.segar.data.remote.response.UserData
 import com.capstoneC23PS274.segar.data.remote.retrofit.ApiService
 import com.capstoneC23PS274.segar.ui.screen.camera.reduceFileImage
@@ -134,6 +135,21 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
         } else {
             val errResponse = getErrBody(response.errorBody()?.string())
             val result: CheckResponse = CheckResponse(
+                error = errResponse.error,
+                message = errResponse.message
+            )
+            flowOf(result)
+        }
+    }
+
+    suspend fun getResult(id: String) : Flow<ResultResponse>{
+        val response = apiService.getResult(token, id)
+        return if (response.isSuccessful && response.body() != null) {
+            val result : ResultResponse = response.body()!!
+            flowOf(result)
+        } else {
+            val errResponse = getErrBody(response.errorBody()?.string())
+            val result = ResultResponse(
                 error = errResponse.error,
                 message = errResponse.message
             )

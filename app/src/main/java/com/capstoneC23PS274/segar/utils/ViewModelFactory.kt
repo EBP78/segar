@@ -10,6 +10,7 @@ import com.capstoneC23PS274.segar.ui.screen.history.HistoryViewmodel
 import com.capstoneC23PS274.segar.ui.screen.history.login.LoginViewmodel
 import com.capstoneC23PS274.segar.ui.screen.profile.ProfileViewmodel
 import com.capstoneC23PS274.segar.ui.screen.register.RegisterViewmodel
+import com.capstoneC23PS274.segar.ui.screen.result.ResultViewmodel
 import com.capstoneC23PS274.segar.ui.screen.splash.SplashViewmodel
 
 class ViewModelFactory (private val segarRepository: SegarRepository) : ViewModelProvider.NewInstanceFactory() {
@@ -31,6 +32,8 @@ class ViewModelFactory (private val segarRepository: SegarRepository) : ViewMode
             return ProfileViewmodel(segarRepository) as T
         } else if (modelClass.isAssignableFrom(SplashViewmodel::class.java)){
             return SplashViewmodel(segarRepository) as T
+        } else if (modelClass.isAssignableFrom(ResultViewmodel::class.java)){
+            return ResultViewmodel(segarRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
