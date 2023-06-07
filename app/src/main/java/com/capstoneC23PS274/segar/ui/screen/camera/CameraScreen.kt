@@ -97,7 +97,8 @@ fun CameraScreen (
                             takePhoto(
                                 application = application,
                                 context = context,
-                                toResult = { file ->
+                                toResult = { file, isBackCamera ->
+                                    rotateFile(file, isBackCamera)
                                     viewmodel.checkImage(file)
                                 },
                                 isFailed = { errMess ->
@@ -137,6 +138,8 @@ fun CameraScreen (
     }
 }
 
+private val cameraSelector : CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
 private fun startCameraPreviewView(context: Context, owner : LifecycleOwner): PreviewView {
     val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
     val previewView = PreviewView(context)
@@ -146,12 +149,10 @@ private fun startCameraPreviewView(context: Context, owner : LifecycleOwner): Pr
 
     imageCapture = ImageCapture.Builder().build()
 
-    val camSelector =
-        CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
     try {
         cameraProviderFuture.get().bindToLifecycle(
             owner,
-            camSelector,
+            cameraSelector,
             preview,
             imageCapture
         )
@@ -161,18 +162,18 @@ private fun startCameraPreviewView(context: Context, owner : LifecycleOwner): Pr
     return previewView
 }
 
-private fun takePhoto(application: Application, context: Context, toResult : (File) -> Unit, isFailed : (String) -> Unit) {
+private fun takePhoto(application: Application, context: Context, toResult : (File, Boolean) -> Unit, isFailed : (String) -> Unit) {
     val imageCapture = imageCapture ?: return
 
     val photoFile = createFile(application)
-
+    val isBackCamera = cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA
     val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
     imageCapture.takePicture(
         outputOptions,
         ContextCompat.getMainExecutor(context),
         object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                toResult(photoFile)
+                toResult(photoFile, isBackCamera)
             }
 
             override fun onError(exception: ImageCaptureException) {
