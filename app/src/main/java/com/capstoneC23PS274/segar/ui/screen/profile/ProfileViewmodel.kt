@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.capstoneC23PS274.segar.data.SegarRepository
 import com.capstoneC23PS274.segar.data.remote.response.ProfileResponse
-import com.capstoneC23PS274.segar.data.remote.response.UserData
 import com.capstoneC23PS274.segar.ui.common.UiState
+import com.capstoneC23PS274.segar.utils.ConstantValue
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +39,7 @@ class ProfileViewmodel (private val repository: SegarRepository) : ViewModel() {
                         _userData.value = UiState.Success(data)
                     }
             } catch (e: Exception) {
-                _userData.value = UiState.Error("Unexpected Error")
+                _userData.value = UiState.Error(ConstantValue.UNEXPECTED_ERROR)
             } finally {
                 _loading.value = false
             }

@@ -8,6 +8,7 @@ import com.capstoneC23PS274.segar.data.SegarRepository
 import com.capstoneC23PS274.segar.data.remote.response.CheckResponse
 import com.capstoneC23PS274.segar.data.remote.response.CheckResult
 import com.capstoneC23PS274.segar.ui.common.UiState
+import com.capstoneC23PS274.segar.utils.ConstantValue
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,7 +45,7 @@ class CameraViewmodel (private val repository: SegarRepository) : ViewModel() {
                         _checkResult.value = UiState.Success(data)
                     }
             } catch (e: Exception) {
-                _checkResult.value = UiState.Error(e.message.toString())
+                _checkResult.value = UiState.Error(ConstantValue.UNEXPECTED_ERROR)
             } finally {
                 _loading.value = false
             }

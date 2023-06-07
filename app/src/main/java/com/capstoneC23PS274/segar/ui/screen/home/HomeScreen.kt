@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.capstoneC23PS274.segar.R
@@ -27,7 +28,7 @@ fun HomeScreen(
     ) {
         Image(
             painterResource(R.drawable.logo_capstone),
-            contentDescription = "app logo",
+            contentDescription = stringResource(id = R.string.app_logo),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .width(250.dp)
@@ -37,7 +38,7 @@ fun HomeScreen(
         )
         Image(
             painterResource(R.drawable.green_home),
-            contentDescription = "splash image",
+            contentDescription = stringResource(id = R.string.splash_image),
             contentScale = ContentScale.FillWidth,
             modifier = Modifier
                 .fillMaxWidth()
@@ -46,7 +47,7 @@ fun HomeScreen(
         )
         Image(
             painterResource(R.drawable.tagline),
-            contentDescription = "splash tagline",
+            contentDescription = stringResource(id = R.string.tagline),
             contentScale = ContentScale.FillWidth,
             modifier = Modifier
                 .width(400.dp)

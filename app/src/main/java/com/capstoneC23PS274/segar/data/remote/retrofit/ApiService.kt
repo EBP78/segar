@@ -11,7 +11,6 @@ import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
 import com.capstoneC23PS274.segar.data.remote.response.ProfileResponse
 import com.capstoneC23PS274.segar.data.remote.response.ResultResponse
 import okhttp3.MultipartBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

@@ -73,9 +73,8 @@ fun HistoryListItem(
                 )
             }
         }
-
-        }
     }
+}
 
 
 @Composable

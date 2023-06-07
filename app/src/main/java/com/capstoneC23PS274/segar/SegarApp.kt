@@ -178,7 +178,7 @@ fun SegarApp(
 @Preview(showBackground = true)
 @Composable
 fun SegarAppPreview() {
-    SegarTheme() {
+    SegarTheme {
 //        SegarApp()
     }
 }

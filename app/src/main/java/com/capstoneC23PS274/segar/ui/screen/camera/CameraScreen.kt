@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
@@ -43,6 +42,7 @@ import java.io.File
 
 
 private var imageCapture: ImageCapture? = null
+private val cameraSelector : CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
 @Composable
 fun CameraScreen (
@@ -137,8 +137,6 @@ fun CameraScreen (
     }
 }
 
-private val cameraSelector : CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
 private fun startCameraPreviewView(context: Context, owner : LifecycleOwner): PreviewView {
     val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
     val previewView = PreviewView(context)
@@ -176,7 +174,7 @@ private fun takePhoto(application: Application, context: Context, toResult : (Fi
             }
 
             override fun onError(exception: ImageCaptureException) {
-                isFailed("Gagal mengambil gambar")
+                isFailed("Gagal Mengambil Foto")
             }
         }
     )
