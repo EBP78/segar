@@ -8,6 +8,7 @@ import com.capstoneC23PS274.segar.data.SegarRepository
 import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
 import com.capstoneC23PS274.segar.data.remote.response.HistoryResponse
 import com.capstoneC23PS274.segar.ui.common.UiState
+import com.capstoneC23PS274.segar.utils.ConstantValue
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,7 +40,7 @@ class HistoryViewmodel (private val repository: SegarRepository) : ViewModel() {
                         _history.value = UiState.Success(data)
                     }
             } catch (e: Exception) {
-                _history.value = UiState.Error("Unexpected Error")
+                _history.value = UiState.Error(ConstantValue.UNEXPECTED_ERROR)
             } finally {
                 _loading.value = false
             }

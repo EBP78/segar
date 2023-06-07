@@ -1,7 +1,6 @@
 package com.capstoneC23PS274.segar.ui.screen.history
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,18 +9,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.capstoneC23PS274.segar.ui.component.HistoryListItem
-import com.capstoneC23PS274.segar.ui.component.LoadingAnimation
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
 import com.capstoneC23PS274.segar.di.Injection
 import com.capstoneC23PS274.segar.ui.common.UiState
 import com.capstoneC23PS274.segar.ui.component.ErrorModal
+import com.capstoneC23PS274.segar.ui.component.HistoryListItem
+import com.capstoneC23PS274.segar.ui.component.LoadingAnimation
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 
 @Composable
@@ -57,7 +55,6 @@ fun HistoryScreen(
                 }
                 is UiState.Error -> {
                     viewmodel.showError(uiState.errorMessage)
-                    Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
                 }
             }
         }

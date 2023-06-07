@@ -8,6 +8,7 @@ import com.capstoneC23PS274.segar.data.SegarRepository
 import com.capstoneC23PS274.segar.data.remote.response.DictDetailItem
 import com.capstoneC23PS274.segar.data.remote.response.DictionaryDetailResponse
 import com.capstoneC23PS274.segar.ui.common.UiState
+import com.capstoneC23PS274.segar.utils.ConstantValue
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,7 +41,7 @@ class DictDetailViewmodel (private val repository: SegarRepository) : ViewModel(
                         _dictionaryData.value = UiState.Success(data)
                     }
             } catch (e: Exception) {
-                _dictionaryData.value = UiState.Error("Unexpected Error")
+                _dictionaryData.value = UiState.Error(ConstantValue.UNEXPECTED_ERROR)
             } finally {
                 _loading.value = false
             }

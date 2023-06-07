@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,7 +43,7 @@ fun ErrorModal(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_warning_amber_24),
-                contentDescription = "Error Icon",
+                contentDescription = stringResource(R.string.error_icon),
                 tint = Color.Red,
                 modifier = Modifier
                     .width(50.dp)
@@ -61,7 +62,7 @@ fun ErrorModal(
 @Composable
 @Preview(showBackground = true)
 fun ErrorModalPreview() {
-    SegarTheme() {
+    SegarTheme {
         ErrorModal(message = "gambar gagal diambil lorem ipsum dolor amety asdf asdf asdf ", isDisplayed = true)
     }
 }

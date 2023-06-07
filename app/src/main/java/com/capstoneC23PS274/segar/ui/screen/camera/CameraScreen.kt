@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
@@ -43,6 +42,7 @@ import java.io.File
 
 
 private var imageCapture: ImageCapture? = null
+private val cameraSelector : CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
 @Composable
 fun CameraScreen (
@@ -97,7 +97,8 @@ fun CameraScreen (
                             takePhoto(
                                 application = application,
                                 context = context,
-                                toResult = { file ->
+                                toResult = { file, isBackCamera ->
+                                    rotateFile(file, isBackCamera)
                                     viewmodel.checkImage(file)
                                 },
                                 isFailed = { errMess ->
@@ -121,7 +122,6 @@ fun CameraScreen (
                 }
                 is UiState.Error -> {
                     viewmodel.showError(uiState.errorMessage)
-                    Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -146,12 +146,10 @@ private fun startCameraPreviewView(context: Context, owner : LifecycleOwner): Pr
 
     imageCapture = ImageCapture.Builder().build()
 
-    val camSelector =
-        CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
     try {
         cameraProviderFuture.get().bindToLifecycle(
             owner,
-            camSelector,
+            cameraSelector,
             preview,
             imageCapture
         )
@@ -161,22 +159,22 @@ private fun startCameraPreviewView(context: Context, owner : LifecycleOwner): Pr
     return previewView
 }
 
-private fun takePhoto(application: Application, context: Context, toResult : (File) -> Unit, isFailed : (String) -> Unit) {
+private fun takePhoto(application: Application, context: Context, toResult : (File, Boolean) -> Unit, isFailed : (String) -> Unit) {
     val imageCapture = imageCapture ?: return
 
     val photoFile = createFile(application)
-
+    val isBackCamera = cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA
     val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
     imageCapture.takePicture(
         outputOptions,
         ContextCompat.getMainExecutor(context),
         object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                toResult(photoFile)
+                toResult(photoFile, isBackCamera)
             }
 
             override fun onError(exception: ImageCaptureException) {
-                isFailed("Gagal mengambil gambar")
+                isFailed("Gagal Mengambil Foto")
             }
         }
     )

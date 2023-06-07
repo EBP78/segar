@@ -1,7 +1,6 @@
 package com.capstoneC23PS274.segar.ui.screen.register
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,7 +66,7 @@ fun RegisterScreen(
         ) {
             Image(
                 painterResource(R.drawable.logo_capstone),
-                contentDescription = "app logo",
+                contentDescription = stringResource(id = R.string.app_logo),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .width(250.dp)
@@ -76,20 +76,20 @@ fun RegisterScreen(
             FormInput(
                 query = username,
                 onQueryChange = { viewmodel.updateUsername(it) },
-                placeholder = "Username"
+                placeholder = stringResource(id = R.string.username)
             )
             FormInput(query = email,
                 onQueryChange = { viewmodel.updateEmail(it) },
-                placeholder = "Email"
+                placeholder = stringResource(id = R.string.email)
             )
             FormInput(query = password,
                 onQueryChange = { viewmodel.updatePassword(it) },
-                placeholder = "Password",
+                placeholder = stringResource(id = R.string.password),
                 isPassword = true
             )
             FormInput(query = confirmPassword,
                 onQueryChange = { viewmodel.updateConfirmPassword(it) },
-                placeholder = "Confirm Password",
+                placeholder = stringResource(id = R.string.confirm_password),
                 isPassword = true
             )
             viewmodel.registerResult.collectAsState(initial = UiState.Loading).value.let { uiState ->
@@ -104,7 +104,7 @@ fun RegisterScreen(
                             colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen)
                         ) {
                             Text(
-                                text = "Register",
+                                text = stringResource(id = R.string.register),
                                 maxLines = 2,
                                 overflow = TextOverflow.Ellipsis,
                                 color = Color.White,
@@ -119,7 +119,6 @@ fun RegisterScreen(
                     }
                     is UiState.Error -> {
                         viewmodel.showError(uiState.errorMessage)
-                        Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

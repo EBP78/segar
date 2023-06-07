@@ -33,9 +33,11 @@ import com.capstoneC23PS274.segar.ui.theme.MainGreen
 import com.capstoneC23PS274.segar.ui.theme.Typography
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import com.capstoneC23PS274.segar.ui.common.UiState
 import com.capstoneC23PS274.segar.ui.component.ErrorModal
 import com.capstoneC23PS274.segar.ui.component.LoadingAnimation
+import com.capstoneC23PS274.segar.utils.formatDate
 
 @Composable
 fun ResultScreen(
@@ -67,7 +69,7 @@ fun ResultScreen(
                                     .data(uiState.data.data.image)
                                     .crossfade(true)
                                     .build(),
-                                contentDescription = "gambar sayur",
+                                contentDescription = stringResource(id = R.string.vegetable_picture),
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .width(225.dp)
@@ -77,7 +79,7 @@ fun ResultScreen(
                             )
                             Icon(
                                 painter = painterResource(id = R.drawable.baseline_check_circle_24),
-                                contentDescription = "check icon",
+                                contentDescription = stringResource(id = R.string.check_Icon),
                                 tint = MainGreen,
                                 modifier = Modifier
                                     .width(75.dp)
@@ -95,7 +97,7 @@ fun ResultScreen(
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
-                                text = uiState.data.data.createdAt.toString(),
+                                text = formatDate(uiState.data.data.createdAt.toString()),
                                 style = Typography.subtitle1,
                             )
                         }
@@ -105,7 +107,6 @@ fun ResultScreen(
                 }
                 is UiState.Error -> {
                     viewmodel.showError(uiState.errorMessage)
-                    Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
                 }
             }
         }

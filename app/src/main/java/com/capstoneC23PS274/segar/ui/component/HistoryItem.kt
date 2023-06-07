@@ -18,6 +18,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
 import com.capstoneC23PS274.segar.ui.theme.MainGreen
+import com.capstoneC23PS274.segar.utils.formatDate
 
 @Composable
 fun HistoryListItem(
@@ -65,23 +66,22 @@ fun HistoryListItem(
                 )
 
                 Text(
-                    text = itemData.createdAt.toString(),
+                    text = formatDate(itemData.createdAt.toString()),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
                 )
             }
         }
-
-        }
     }
+}
 
 
 @Composable
 @Preview(showBackground = true)
 fun HistoryPreview() {
     MaterialTheme {
-        val historyItem = HistoryItem(85,"https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg", "80% Seggar", "orang", 1, "Sawi", "oaisdfoi23")
+        val historyItem = HistoryItem( 85.0,"https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg", "80% Seggar", "orang", 1, "Sawi", "oaisdfoi23")
         HistoryListItem(
             itemData = historyItem,
             modifier = Modifier

@@ -13,9 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.capstoneC23PS274.segar.ui.theme.SegarTheme
+import com.capstoneC23PS274.segar.R
 
 @Composable
 fun LoadingAnimation(
@@ -37,7 +39,7 @@ fun LoadingAnimation(
                 color = MaterialTheme.colors.primary,
             )
             Text(
-                text = "Loading...",
+                text = stringResource(id = R.string.loading),
             )
         }
     }
@@ -46,7 +48,7 @@ fun LoadingAnimation(
 @Composable
 @Preview(showBackground = true)
 fun LoadingAnimationPreview() {
-    SegarTheme() {
+    SegarTheme {
         LoadingAnimation(isDisplayed = true)
     }
 }

@@ -134,7 +134,7 @@ fun CameraFAB(
 @Composable
 @Preview(showBackground = true)
 fun BottomBarPreview() {
-    SegarTheme() {
+    SegarTheme {
         BottomBar(navController = rememberNavController())
     }
 }
@@ -142,7 +142,7 @@ fun BottomBarPreview() {
 @Composable
 @Preview(showBackground = true)
 fun CameraFABPreview() {
-    SegarTheme() {
+    SegarTheme {
         CameraFAB(onClick = {
 
         })

@@ -20,6 +20,7 @@ import com.capstoneC23PS274.segar.R
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.stringResource
 import com.capstoneC23PS274.segar.ui.theme.MainGreen
 
 @Composable
@@ -64,7 +65,7 @@ fun FAQListItem(
 
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_keyboard_arrow_right_24),
-                    contentDescription = "Expandable Arrow",
+                    contentDescription = stringResource(id = R.string.expandable_arrow),
                     modifier = Modifier
                         .clickable {
                             isOpen = !isOpen

@@ -7,14 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.capstoneC23PS274.segar.data.SegarRepository
 import com.capstoneC23PS274.segar.data.remote.body.RegisterBody
 import com.capstoneC23PS274.segar.data.remote.response.CommonResponse
-import com.capstoneC23PS274.segar.data.remote.response.LoginResponse
 import com.capstoneC23PS274.segar.ui.common.UiState
+import com.capstoneC23PS274.segar.utils.ConstantValue
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class RegisterViewmodel (private val repository: SegarRepository) : ViewModel() {
@@ -75,10 +74,16 @@ class RegisterViewmodel (private val repository: SegarRepository) : ViewModel() 
                         _registerResult.value = UiState.Error(it.message.toString())
                     }
                     .collect { data ->
-                        _registerResult.value = UiState.Success(data)
+                        if (data.message == ConstantValue.REGISTER_SUCCESS) {
+                            _registerResult.value = UiState.Success(data)
+                        } else {
+                            _registerResult.value = UiState.Error(data.message.toString())
+                            delay(25)
+                            _registerResult.value = UiState.Loading
+                        }
                     }
             } catch (e: Exception) {
-                _registerResult.value = UiState.Error("Unexpected Error")
+                _registerResult.value = UiState.Error(ConstantValue.UNEXPECTED_ERROR)
             } finally {
                 _loading.value = false
             }
