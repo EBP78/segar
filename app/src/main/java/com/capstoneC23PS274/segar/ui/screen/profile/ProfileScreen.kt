@@ -26,6 +26,7 @@ import com.capstoneC23PS274.segar.di.Injection
 import com.capstoneC23PS274.segar.ui.common.UiState
 import com.capstoneC23PS274.segar.ui.component.ErrorModal
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
+import com.capstoneC23PS274.segar.utils.formatDate
 
 @Composable
 fun ProfileScreen(
@@ -87,7 +88,7 @@ fun ProfileScreen(
                                 fontSize = 20.sp
                             )
                             Text(
-                                text = uiState.data.data.joinedAt.toString(),
+                                text = formatDate(uiState.data.data.joinedAt.toString()),
                                 maxLines = 2,
                                 overflow = TextOverflow.Ellipsis,
                                 fontSize = 25.sp,

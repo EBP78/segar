@@ -36,6 +36,7 @@ import androidx.compose.runtime.getValue
 import com.capstoneC23PS274.segar.ui.common.UiState
 import com.capstoneC23PS274.segar.ui.component.ErrorModal
 import com.capstoneC23PS274.segar.ui.component.LoadingAnimation
+import com.capstoneC23PS274.segar.utils.formatDate
 
 @Composable
 fun ResultScreen(
@@ -95,7 +96,7 @@ fun ResultScreen(
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
-                                text = uiState.data.data.createdAt.toString(),
+                                text = formatDate(uiState.data.data.createdAt.toString()),
                                 style = Typography.subtitle1,
                             )
                         }

@@ -18,6 +18,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
 import com.capstoneC23PS274.segar.ui.theme.MainGreen
+import com.capstoneC23PS274.segar.utils.formatDate
 
 @Composable
 fun HistoryListItem(
@@ -65,7 +66,7 @@ fun HistoryListItem(
                 )
 
                 Text(
-                    text = itemData.createdAt.toString(),
+                    text = formatDate(itemData.createdAt.toString()),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
