@@ -119,7 +119,6 @@ fun RegisterScreen(
                     }
                     is UiState.Error -> {
                         viewmodel.showError(uiState.errorMessage)
-                        Toast.makeText(context, "gagal", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

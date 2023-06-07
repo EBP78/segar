@@ -39,7 +39,7 @@ class HistoryViewmodel (private val repository: SegarRepository) : ViewModel() {
                         _history.value = UiState.Success(data)
                     }
             } catch (e: Exception) {
-                _history.value = UiState.Error("Unexpected Error")
+                _history.value = UiState.Error(e.message.toString())
             } finally {
                 _loading.value = false
             }

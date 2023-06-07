@@ -7,7 +7,7 @@ import com.capstoneC23PS274.segar.ui.screen.camera.CameraViewmodel
 import com.capstoneC23PS274.segar.ui.screen.dictdetail.DictDetailViewmodel
 import com.capstoneC23PS274.segar.ui.screen.dictionary.DictionaryViewmodel
 import com.capstoneC23PS274.segar.ui.screen.history.HistoryViewmodel
-import com.capstoneC23PS274.segar.ui.screen.history.login.LoginViewmodel
+import com.capstoneC23PS274.segar.ui.screen.login.LoginViewmodel
 import com.capstoneC23PS274.segar.ui.screen.profile.ProfileViewmodel
 import com.capstoneC23PS274.segar.ui.screen.register.RegisterViewmodel
 import com.capstoneC23PS274.segar.ui.screen.result.ResultViewmodel

@@ -28,7 +28,7 @@ import com.capstoneC23PS274.segar.ui.screen.dictionary.DictionaryScreen
 import com.capstoneC23PS274.segar.ui.screen.faq.FAQScreen
 import com.capstoneC23PS274.segar.ui.screen.history.HistoryScreen
 import com.capstoneC23PS274.segar.ui.screen.home.HomeScreen
-import com.capstoneC23PS274.segar.ui.screen.history.login.LoginScreen
+import com.capstoneC23PS274.segar.ui.screen.login.LoginScreen
 import com.capstoneC23PS274.segar.ui.screen.profile.ProfileScreen
 import com.capstoneC23PS274.segar.ui.screen.register.RegisterScreen
 import com.capstoneC23PS274.segar.ui.screen.result.ResultScreen

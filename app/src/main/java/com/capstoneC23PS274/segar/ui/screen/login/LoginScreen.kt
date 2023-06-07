@@ -1,4 +1,4 @@
-package com.capstoneC23PS274.segar.ui.screen.history.login
+package com.capstoneC23PS274.segar.ui.screen.login
 
 import android.content.Context
 import android.widget.Toast
@@ -125,7 +125,6 @@ fun LoginScreen(
                     }
                     is UiState.Error -> {
                         viewModel.showError(uiState.errorMessage)
-                        Toast.makeText(context,"gagal", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

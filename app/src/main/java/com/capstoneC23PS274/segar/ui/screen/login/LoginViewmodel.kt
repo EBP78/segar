@@ -1,4 +1,4 @@
-package com.capstoneC23PS274.segar.ui.screen.history.login
+package com.capstoneC23PS274.segar.ui.screen.login
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

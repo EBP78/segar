@@ -44,7 +44,7 @@ class CameraViewmodel (private val repository: SegarRepository) : ViewModel() {
                         _checkResult.value = UiState.Success(data)
                     }
             } catch (e: Exception) {
-                _checkResult.value = UiState.Error("Unexpected Error")
+                _checkResult.value = UiState.Error(e.message.toString())
             } finally {
                 _loading.value = false
             }

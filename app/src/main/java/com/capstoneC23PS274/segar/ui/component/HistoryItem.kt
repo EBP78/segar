@@ -82,7 +82,7 @@ fun HistoryListItem(
 @Preview(showBackground = true)
 fun HistoryPreview() {
     MaterialTheme {
-        val historyItem = HistoryItem(85,"https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg", "80% Seggar", "orang", 1, "Sawi", "oaisdfoi23")
+        val historyItem = HistoryItem( 85.0,"https://cdn.pixabay.com/photo/2016/07/16/03/50/pigs-1520968_1280.jpg", "80% Seggar", "orang", 1, "Sawi", "oaisdfoi23")
         HistoryListItem(
             itemData = historyItem,
             modifier = Modifier
