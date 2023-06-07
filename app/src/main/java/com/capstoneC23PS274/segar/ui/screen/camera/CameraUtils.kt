@@ -21,11 +21,6 @@ import java.io.FileOutputStream
 
 private const val FILENAME_FORMAT = "dd-MMM-yyyy-H-m-S"
 
-val timeStamp: String = SimpleDateFormat(
-    FILENAME_FORMAT,
-    Locale.US
-).format(System.currentTimeMillis())
-
 val REQUIRED_PERMISSIONS =
     mutableListOf(
         Manifest.permission.CAMERA,
@@ -60,6 +55,11 @@ fun createFile(application: Application): File {
     val outputDirectory = if (
         mediaDir != null && mediaDir.exists()
     ) mediaDir else application.filesDir
+
+    val timeStamp: String = SimpleDateFormat(
+        FILENAME_FORMAT,
+        Locale.US
+    ).format(System.currentTimeMillis())
 
     return File(outputDirectory, "$timeStamp.jpg")
 }
