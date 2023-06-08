@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.Typeface
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -61,6 +62,7 @@ fun FormInput(
             .heightIn(min = 18.dp)
             .clip(RoundedCornerShape(8.dp))
             .border(BorderStroke(1.dp, MainGreen))
+            .testTag(placeholder)
     )
     Spacer(modifier = modifier.height(15.dp))
 }
