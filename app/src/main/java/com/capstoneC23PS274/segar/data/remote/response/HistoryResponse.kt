@@ -17,7 +17,7 @@ data class HistoryResponse(
 data class HistoryItem(
 
 	@field:SerializedName("score")
-	val score: Double? = null,
+	val score: String? = null,
 
 	@field:SerializedName("image")
 	val image: String? = null,

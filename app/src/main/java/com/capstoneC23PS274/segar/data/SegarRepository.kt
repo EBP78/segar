@@ -1,5 +1,7 @@
 package com.capstoneC23PS274.segar.data
 
+import android.net.ConnectivityManager
+import android.net.Network
 import com.capstoneC23PS274.segar.data.preference.UserPreference
 import com.capstoneC23PS274.segar.data.remote.body.LoginBody
 import com.capstoneC23PS274.segar.data.remote.body.RegisterBody
@@ -17,20 +19,27 @@ import com.capstoneC23PS274.segar.data.remote.response.ProfileResponse
 import com.capstoneC23PS274.segar.data.remote.response.ResultResponse
 import com.capstoneC23PS274.segar.data.remote.response.UserData
 import com.capstoneC23PS274.segar.data.remote.retrofit.ApiService
+import com.capstoneC23PS274.segar.network.NetworkObserver
+import com.capstoneC23PS274.segar.ui.common.NetworkState
 import com.capstoneC23PS274.segar.ui.screen.camera.reduceFileImage
 import com.capstoneC23PS274.segar.utils.ConstantValue
 import com.google.gson.Gson
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
-class SegarRepository (private val apiService: ApiService, private val userPreference: UserPreference) {
+class SegarRepository (private val apiService: ApiService, private val userPreference: UserPreference, private val networkObserver: NetworkObserver) {
 
     private val token = ConstantValue.AUTH + userPreference.getToken()
+    private val networkManager = networkObserver.networkManager
 
     suspend fun postLogin(loginBody: LoginBody) : Flow<LoginResponse> {
         val response = apiService.postLoginUser(loginBody)
@@ -168,5 +177,35 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
     private fun getErrBody(errBody: String?) : CommonResponse{
         val gson = Gson()
         return gson.fromJson(errBody, CommonResponse::class.java)
+    }
+
+    fun observeNetwork(): Flow<NetworkState<String>>{
+        return callbackFlow {
+            val callback = object : ConnectivityManager.NetworkCallback(){
+                override fun onAvailable(network: Network) {
+                    super.onAvailable(network)
+                    launch { send(NetworkState.NetworkAvailable) }
+                }
+
+                override fun onLosing(network: Network, maxMsToLive: Int) {
+                    super.onLosing(network, maxMsToLive)
+                    launch { send(NetworkState.NetworkLosing) }
+                }
+
+                override fun onLost(network: Network) {
+                    super.onLost(network)
+                    launch { send(NetworkState.NetworkLost) }
+                }
+
+                override fun onUnavailable() {
+                    super.onUnavailable()
+                    launch { send(NetworkState.NetworkUnavailable) }
+                }
+            }
+            networkManager.registerDefaultNetworkCallback(callback)
+            awaitClose {
+                networkManager.unregisterNetworkCallback(callback)
+            }
+        }.distinctUntilChanged()
     }
 }

@@ -7,10 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -19,6 +23,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.capstoneC23PS274.segar.di.Injection
+import com.capstoneC23PS274.segar.ui.common.NetworkState
 import com.capstoneC23PS274.segar.ui.component.BottomBar
 import com.capstoneC23PS274.segar.ui.component.CameraFAB
 import com.capstoneC23PS274.segar.ui.navigation.Screen
@@ -28,26 +34,32 @@ import com.capstoneC23PS274.segar.ui.screen.dictionary.DictionaryScreen
 import com.capstoneC23PS274.segar.ui.screen.faq.FAQScreen
 import com.capstoneC23PS274.segar.ui.screen.history.HistoryScreen
 import com.capstoneC23PS274.segar.ui.screen.home.HomeScreen
+import com.capstoneC23PS274.segar.ui.screen.internet.InternetScreen
 import com.capstoneC23PS274.segar.ui.screen.login.LoginScreen
 import com.capstoneC23PS274.segar.ui.screen.profile.ProfileScreen
 import com.capstoneC23PS274.segar.ui.screen.register.RegisterScreen
 import com.capstoneC23PS274.segar.ui.screen.result.ResultScreen
 import com.capstoneC23PS274.segar.ui.screen.splash.SplashScreen
 import com.capstoneC23PS274.segar.ui.theme.SegarTheme
+import com.capstoneC23PS274.segar.utils.ViewModelFactory
 
 @Composable
 fun SegarApp(
     application: Application,
     modifier : Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
+    viewmodel: MainViewmodel = viewModel(
+        factory = ViewModelFactory(Injection.provideRepository(LocalContext.current))
+    )
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val noBottomNav = listOf<String>(
+    val noBottomNav = listOf(
+        Screen.Splash.route,
+        Screen.InternetConnection.route,
         Screen.Login.route,
         Screen.Register.route,
-        Screen.Check.route,
-        Screen.Splash.route
+        Screen.Check.route
     )
     Scaffold(
         bottomBar = {
@@ -172,7 +184,24 @@ fun SegarApp(
                 })
             }
         }
+        viewmodel.networkObserver().collectAsState(initial = NetworkState.NetworkUnavailable).value.let { networkState ->
+            when(networkState){
+                is NetworkState.NetworkUnavailable -> {
+                    InternetScreen(message = "Network Unavailable", modifier = Modifier.padding(innerPadding))
+                }
+                is NetworkState.NetworkLost -> {
+                    InternetScreen(message = "Network Lost", modifier = Modifier.padding(innerPadding))
+                }
+                is NetworkState.NetworkLosing -> {
+                    InternetScreen(message = "Network Losing", modifier = Modifier.padding(innerPadding))
+                }
+                is NetworkState.NetworkAvailable -> {
+                    // do nothing
+                }
+            }
+        }
     }
+
 }
 
 @Preview(showBackground = true)

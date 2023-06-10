@@ -33,6 +33,7 @@ import com.capstoneC23PS274.segar.ui.theme.MainGreen
 import com.capstoneC23PS274.segar.ui.theme.Typography
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.capstoneC23PS274.segar.ui.common.UiState
 import com.capstoneC23PS274.segar.ui.component.ErrorModal
@@ -78,9 +79,15 @@ fun ResultScreen(
                                     .border(BorderStroke(3.dp, MainGreen))
                             )
                             Icon(
-                                painter = painterResource(id = R.drawable.baseline_check_circle_24),
+                                painter = if (uiState.data.data.score == "Fresh")
+                                    painterResource(id = R.drawable.baseline_check_circle_24)
+                                else
+                                    painterResource(id = R.drawable.baseline_close_24),
                                 contentDescription = stringResource(id = R.string.check_Icon),
-                                tint = MainGreen,
+                                tint = if (uiState.data.data.score == "Fresh")
+                                    MainGreen
+                                else
+                                    Color.Red,
                                 modifier = Modifier
                                     .width(75.dp)
                                     .height(75.dp)
@@ -89,7 +96,10 @@ fun ResultScreen(
                                 text = uiState.data.data.name.toString(),
                                 style = Typography.h5,
                                 fontWeight = FontWeight.Bold,
-                                color = MainGreen
+                                color = if (uiState.data.data.score == "Fresh")
+                                    MainGreen
+                                else
+                                    Color.Red
                             )
                             Text(
                                 text = uiState.data.data.score.toString(),
