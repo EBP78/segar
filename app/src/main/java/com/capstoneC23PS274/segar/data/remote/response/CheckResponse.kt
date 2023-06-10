@@ -17,7 +17,7 @@ data class CheckResponse(
 data class CheckResult(
 
 	@field:SerializedName("score")
-	val score: Double? = null,
+	val score: String? = null,
 
 	@field:SerializedName("image")
 	val image: String? = null,

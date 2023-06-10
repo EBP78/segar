@@ -2,6 +2,7 @@ package com.capstoneC23PS274.segar.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.capstoneC23PS274.segar.MainViewmodel
 import com.capstoneC23PS274.segar.data.SegarRepository
 import com.capstoneC23PS274.segar.ui.screen.camera.CameraViewmodel
 import com.capstoneC23PS274.segar.ui.screen.dictdetail.DictDetailViewmodel
@@ -34,6 +35,8 @@ class ViewModelFactory (private val segarRepository: SegarRepository) : ViewMode
             return SplashViewmodel(segarRepository) as T
         } else if (modelClass.isAssignableFrom(ResultViewmodel::class.java)){
             return ResultViewmodel(segarRepository) as T
+        } else if (modelClass.isAssignableFrom(MainViewmodel::class.java)){
+            return MainViewmodel(segarRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
