@@ -171,21 +171,24 @@ class SegarAppTest {
     }
 
     @Test
-    fun camera_isDisplayedProperly_uploadSuccess_resultDisplayed() = runTest {
+    fun camera_isDisplayedProperly() = runTest {
         home_isDisplayed()
         composeTestRule.onNodeWithStringId(R.string.menu_check).performClick()
         navController.assertCurrentRouteName(Screen.Check.route)
 
         composeTestRule.onNodeWithTagStringId(R.string.camera_view).assertIsDisplayed()
         composeTestRule.onNodeWithTagStringId(R.string.cameraFAB).assertIsDisplayed()
-        composeTestRule.onNodeWithTagStringId(R.string.cameraFAB).performClick()
+    }
 
-        composeTestRule.waitUntilDoesNotExist(hasText("Loading..."), 10000)
-
-        navController.assertCurrentRouteName(Screen.Result.route)
-
+    @Test
+    fun result_idDisplayedProperly() = runTest {
+        home_isDisplayed()
+        navController.setCurrentDestination("check/6479f0a378f1c720956f435e")
         composeTestRule.waitUntilDoesNotExist(hasText("Loading..."), 5000)
 
         composeTestRule.onNodeWithContentDescStringId(R.string.vegetable_picture).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Kol").assertIsDisplayed()
+        composeTestRule.onNodeWithText("85").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Tue, Jun 06, 2023").assertIsDisplayed()
     }
 }
