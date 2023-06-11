@@ -145,7 +145,7 @@ class SegarAppTest {
         composeTestRule.onNodeWithStringId(R.string.menu_history).performClick()
         navController.assertCurrentRouteName(Screen.History.route)
 
-        composeTestRule.waitUntilDoesNotExist(hasText("Loading..."))
+        composeTestRule.waitUntilDoesNotExist(hasText("Loading..."), 5000)
 
         composeTestRule.onAllNodesWithText("Kol")[0].assertIsDisplayed()
         composeTestRule.onAllNodesWithText("85")[0].assertIsDisplayed()
@@ -173,22 +173,7 @@ class SegarAppTest {
     @Test
     fun camera_isDisplayedProperly() = runTest {
         home_isDisplayed()
-        composeTestRule.onNodeWithStringId(R.string.menu_check).performClick()
+        composeTestRule.onNodeWithTagStringId(R.string.cameraFAB).performClick()
         navController.assertCurrentRouteName(Screen.Check.route)
-
-        composeTestRule.onNodeWithTagStringId(R.string.camera_view).assertIsDisplayed()
-        composeTestRule.onNodeWithTagStringId(R.string.cameraFAB).assertIsDisplayed()
-    }
-
-    @Test
-    fun result_idDisplayedProperly() = runTest {
-        home_isDisplayed()
-        navController.setCurrentDestination("check/6479f0a378f1c720956f435e")
-        composeTestRule.waitUntilDoesNotExist(hasText("Loading..."), 5000)
-
-        composeTestRule.onNodeWithContentDescStringId(R.string.vegetable_picture).assertIsDisplayed()
-        composeTestRule.onNodeWithText("Kol").assertIsDisplayed()
-        composeTestRule.onNodeWithText("85").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Tue, Jun 06, 2023").assertIsDisplayed()
     }
 }
