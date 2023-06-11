@@ -25,6 +25,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -39,6 +41,7 @@ import com.capstoneC23PS274.segar.ui.component.LoadingAnimation
 import com.capstoneC23PS274.segar.ui.theme.SegarTheme
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 import java.io.File
+import com.capstoneC23PS274.segar.R
 
 
 private var imageCapture: ImageCapture? = null
@@ -90,7 +93,9 @@ fun CameraScreen (
                 is UiState.Loading -> {
                     if (hasCamPermission) {
                         AndroidView(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .testTag(stringResource(id = R.string.camera_view)),
                             factory = { startCameraPreviewView(context, lifecycleOwner) }
                         )
                         CameraFAB(onClick = {

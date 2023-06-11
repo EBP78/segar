@@ -26,4 +26,6 @@
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="check_Icon">Check Icon</string>
+    <string name="camera_view">camera view</string>
+    <string name="cameraFAB">camera FAB</string>
 </resources>

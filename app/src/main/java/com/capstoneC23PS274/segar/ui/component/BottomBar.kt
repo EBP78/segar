@@ -116,7 +116,7 @@ fun CameraFAB(
         onClick = onClick,
         backgroundColor = MaterialTheme.colors.primary,
         modifier = modifier
-            .testTag("CameraFAB")
+            .testTag(stringResource(id = R.string.cameraFAB))
             .size(75.dp)
             .border(BorderStroke(7.dp, Color.White), CircleShape)
     ) {

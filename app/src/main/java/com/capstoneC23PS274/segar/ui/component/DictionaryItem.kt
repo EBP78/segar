@@ -50,7 +50,7 @@ fun DictionaryItem (
                         .data(itemData.image)
                         .crossfade(true)
                         .build(),
-                    contentDescription = null,
+                    contentDescription = stringResource(id = R.string.vegetable_picture),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .width(100.dp)

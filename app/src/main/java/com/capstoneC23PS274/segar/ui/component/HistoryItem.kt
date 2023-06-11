@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,6 +20,7 @@ import coil.request.ImageRequest
 import com.capstoneC23PS274.segar.data.remote.response.HistoryItem
 import com.capstoneC23PS274.segar.ui.theme.MainGreen
 import com.capstoneC23PS274.segar.utils.formatDate
+import com.capstoneC23PS274.segar.R
 
 @Composable
 fun HistoryListItem(
@@ -35,7 +37,7 @@ fun HistoryListItem(
                     .data(itemData.image)
                     .crossfade(true)
                     .build(),
-                contentDescription = null,
+                contentDescription = stringResource(id = R.string.vegetable_picture),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .width(100.dp)
