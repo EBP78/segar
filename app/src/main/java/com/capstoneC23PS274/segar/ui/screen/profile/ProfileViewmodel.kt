@@ -5,18 +5,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.capstoneC23PS274.segar.data.SegarRepository
+import com.capstoneC23PS274.segar.data.remote.response.CommonResponse
 import com.capstoneC23PS274.segar.data.remote.response.ProfileResponse
 import com.capstoneC23PS274.segar.ui.common.UiState
 import com.capstoneC23PS274.segar.utils.ConstantValue
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ProfileViewmodel (private val repository: SegarRepository) : ViewModel() {
     private val _userData : MutableStateFlow<UiState<ProfileResponse>> = MutableStateFlow(UiState.Loading)
     val userData : StateFlow<UiState<ProfileResponse>> get() = _userData
+
+    private val _logoutResult : MutableStateFlow<UiState<CommonResponse>> = MutableStateFlow(UiState.Loading)
+    val logoutResult : StateFlow<UiState<CommonResponse>> get() = _logoutResult
 
     private val _loading = mutableStateOf(false)
     val loading : State<Boolean> get() = _loading
@@ -26,6 +32,8 @@ class ProfileViewmodel (private val repository: SegarRepository) : ViewModel() {
 
     private val _errorMessage = mutableStateOf("")
     val errorMessage : State<String> get() = _errorMessage
+
+    private lateinit var job: Job
 
     fun getUserData() {
         _loading.value = true
@@ -55,7 +63,28 @@ class ProfileViewmodel (private val repository: SegarRepository) : ViewModel() {
         }
     }
 
-    fun logout(){
-        repository.logout()
+    fun logout(email: String){
+        _loading.value = true
+        job = viewModelScope.launch {
+            try {
+                repository.logout(email)
+                    .catch {
+                        _logoutResult.value = UiState.Error(it.message.toString())
+                    }
+                    .collect { data ->
+                        _logoutResult.value = UiState.Success(data)
+                        delay(25)
+                        _logoutResult.value = UiState.Loading
+                    }
+            } catch (e: Exception) {
+                _logoutResult.value = UiState.Error(ConstantValue.UNEXPECTED_ERROR)
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun isFinished() {
+        _logoutResult.value = UiState.Loading
     }
 }

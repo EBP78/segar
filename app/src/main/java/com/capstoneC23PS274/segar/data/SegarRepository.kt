@@ -4,6 +4,7 @@ import android.net.ConnectivityManager
 import android.net.Network
 import com.capstoneC23PS274.segar.data.preference.UserPreference
 import com.capstoneC23PS274.segar.data.remote.body.LoginBody
+import com.capstoneC23PS274.segar.data.remote.body.LogoutBody
 import com.capstoneC23PS274.segar.data.remote.body.RegisterBody
 import com.capstoneC23PS274.segar.data.remote.response.CheckResponse
 import com.capstoneC23PS274.segar.data.remote.response.CheckResult
@@ -166,8 +167,17 @@ class SegarRepository (private val apiService: ApiService, private val userPrefe
         }
     }
 
-    fun logout(){
-        userPreference.logout()
+    suspend fun logout(email: String) : Flow<CommonResponse>{
+        val logoutBody = LogoutBody(email)
+        val response = apiService.postLogoutUser(token, logoutBody)
+        return if (response.isSuccessful) {
+            val result : CommonResponse = response.body()!!
+            userPreference.logout()
+            flowOf(result)
+        } else {
+            val errResponse = getErrBody(response.errorBody()?.string())
+            flowOf(errResponse)
+        }
     }
 
     fun isLogin() : Boolean{

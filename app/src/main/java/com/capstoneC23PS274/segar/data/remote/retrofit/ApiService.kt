@@ -1,6 +1,7 @@
 package com.capstoneC23PS274.segar.data.remote.retrofit
 
 import com.capstoneC23PS274.segar.data.remote.body.LoginBody
+import com.capstoneC23PS274.segar.data.remote.body.LogoutBody
 import com.capstoneC23PS274.segar.data.remote.body.RegisterBody
 import com.capstoneC23PS274.segar.data.remote.response.CheckResponse
 import com.capstoneC23PS274.segar.data.remote.response.CommonResponse
@@ -29,6 +30,12 @@ interface ApiService{
     @POST("auth/register")
     suspend fun postRegisterUser(
         @Body registerBody: RegisterBody
+    ) : Response<CommonResponse>
+
+    @POST("auth/logout")
+    suspend fun postLogoutUser(
+        @Header("Authorization") token: String,
+        @Body email: LogoutBody
     ) : Response<CommonResponse>
 
     @GET("dictionaries")
