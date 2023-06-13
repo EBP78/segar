@@ -34,6 +34,7 @@ Vallian | A355DSX1705 | Mobile Development | Universitas Tarumanagara
 
 # Other resources
 * Machine Learning Model
-  - Colab
+  - https://colab.research.google.com/drive/1ndBqUdoqqWPaXkHvzJDeX_y-gNCHciPN?usp=sharing
+  - https://colab.research.google.com/drive/1CjNdrBqKWtYUv1JybFz2ztCYU1Vdvi9w?usp=sharing
 * Cloud Computing Repository
   - https://github.com/KuR0zZ/Capstone-Segar
