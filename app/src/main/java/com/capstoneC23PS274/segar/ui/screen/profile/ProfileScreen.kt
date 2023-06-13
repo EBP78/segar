@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.Button
@@ -33,6 +34,7 @@ import com.capstoneC23PS274.segar.ui.theme.MainGreen
 import com.capstoneC23PS274.segar.utils.ViewModelFactory
 import com.capstoneC23PS274.segar.utils.formatDate
 
+private var email : String? = null
 @Composable
 fun ProfileScreen(
     toFaq: () -> Unit,
@@ -47,19 +49,21 @@ fun ProfileScreen(
     val errMess by viewmodel.errorMessage
     val errShow by viewmodel.errorShow
     Box (modifier = modifier.fillMaxSize()) {
-        viewmodel.userData.collectAsState(initial = UiState.Loading).value.let { uiState ->
-            when(uiState) {
-                is UiState.Loading -> {
-                    viewmodel.getUserData()
-                }
-                is UiState.Success -> {
-                    if (uiState.data.data != null){
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(10.dp)
-                        ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)
+        ) {
+            viewmodel.userData.collectAsState(initial = UiState.Loading).value.let { uiState ->
+                when (uiState) {
+                    is UiState.Loading -> {
+                        viewmodel.getUserData()
+                    }
+
+                    is UiState.Success -> {
+                        if (uiState.data.data != null) {
+                            email = uiState.data.data.email.toString()
                             Text(
                                 text = stringResource(id = R.string.username),
                                 maxLines = 2,
@@ -99,49 +103,64 @@ fun ProfileScreen(
                                 fontSize = 25.sp,
                                 fontWeight = FontWeight.Bold
                             )
-                            Button(
-                                onClick = toFaq,
-                                colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
-                                enabled = false,
-                                modifier = Modifier
-                                    .widthIn(min = 150.dp)
-                                    .padding(10.dp)
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.faq),
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis,
-                                    color = Color.White,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp,
-                                )
-                            }
-                            Button(
-                                onClick = {
-                                    viewmodel.logout()
-                                    logout()
-                                },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
-                                modifier = Modifier
-                                    .widthIn(min = 150.dp)
-                                    .padding(10.dp)
-                            ) {
-                                Text(
-                                    text = stringResource(id = R.string.logout),
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis,
-                                    color = Color.White,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp,
-                                )
-                            }
+                        } else {
+                            viewmodel.showError(uiState.data.message.toString())
                         }
-                    } else {
-                        viewmodel.showError(uiState.data.message.toString())
+                    }
+
+                    is UiState.Error -> {
+                        viewmodel.showError(uiState.errorMessage)
                     }
                 }
-                is UiState.Error -> {
-                    viewmodel.showError(uiState.errorMessage)
+            }
+            Button(
+                onClick = toFaq,
+                colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
+                enabled = false,
+                modifier = Modifier
+                    .widthIn(min = 150.dp)
+                    .padding(10.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.faq),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                )
+            }
+            viewmodel.logoutResult.collectAsState(initial = UiState.Loading).value.let { uiState ->
+                when(uiState) {
+                    is UiState.Loading -> {
+                        Button(
+                            onClick = {
+                                if (email != null) {
+                                    viewmodel.logout(email.toString())
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(backgroundColor = MainGreen),
+                            modifier = Modifier
+                                .widthIn(min = 150.dp)
+                                .padding(10.dp)
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.logout),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 18.sp,
+                            )
+                        }
+                    }
+                    is UiState.Success -> {
+                        logout()
+                        viewmodel.isFinished()
+                    }
+                    is UiState.Error -> {
+                        viewmodel.showError(uiState.errorMessage)
+                    }
                 }
             }
         }
